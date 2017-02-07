@@ -1,0 +1,41 @@
+<div ng-controller="loginCtrl" ng-cloak style="width:100%;height: 100%;">
+
+	<form name="loginForm" ng-submit="login()" style="z-index: 99999;">
+		<md-toolbar style="width: 100%;height: 20px;background-color: #eeeeee;color: #616161;">
+			<div class="md-toolbar-tools">
+				<span flex></span>
+
+				<span style="font-size: 22px;">欢迎使用服装品管APP</span>
+
+				<span flex></span>
+
+			</div>
+		</md-toolbar>
+		<div class="container" ng-if="activated">
+			<md-progress-linear md-mode="indeterminate" class="md-warn"></md-progress-linear>
+		</div>
+		<!--/md-content-->
+		<!--md-content style="width:500px;height:300px;position:absolute;left:50%;top:50%;margin-left:-250px;margin-top:-150px;"-->
+		<md-content layout-padding>
+			<md-input-container class="md-block" style="width: 50%;margin-left: 24.5%;margin-top: 15%;">
+				<label style="font-size: 22px !important;">账号</label>
+				<input required name="userName" ng-model="userName" ng-virtual-keyboard/>
+				<div ng-messages="loginForm.userName.$error">
+					<div ng-message="required">请输入账号</div>
+				</div>
+			</md-input-container>
+			<md-input-container class="md-block" style="width: 50%;margin-left: 24.5%;">
+				<label style="font-size: 22px !important;">密码</label>
+				<input ng-model="password" type="password" required name="password" ng-change="getpword()" ng-virtual-keyboard/>
+				<div ng-messages="loginForm.password.$error">
+					<div ng-message="required">请输入密码</div>
+				</div>
+			</md-input-container>
+		</md-content>
+		<md-button ng-disabled="loginForm.$invalid" type="submit" style="text-align: center;background-color: #2196f3;color: white;font-size: 22px;width: 50%;margin-left: 25%;height: 46px;">登录</md-button>
+	</form>
+	
+	<input type="button" value="test1" ng-click="tests()";/>
+	<input type="button" value="test2" ng-click="tests2()";/>
+	<input type="button" value="test3" ng-click="tests3()";/>
+</div>

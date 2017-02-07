@@ -1,0 +1,24 @@
+<div ng-controller="choiceCtrl" ng-cloak style="width:100%;height: 100%;">
+	<md-content>
+		<md-toolbar style="width: 100%;height: 20px;background-color: #eeeeee;color: #616161;">
+			<div class="md-toolbar-tools">
+				<span flex></span>
+				
+	          <span style="margin-left: 7%; font-size: 22px;">欢迎使用服装品管APP</span>
+	     
+				<span flex></span>
+				<md-button ng-click="logout()" style="color: #64b5f6;font-size: 20px;">
+					登出
+				</md-button>
+			</div>
+		</md-toolbar>
+	</md-content>
+	<md-content style="margin-top: 15%;">
+		<md-button class="md-raised md-primary" style="background-color: #2196f3;color: white;font-size: 22px;width: 40%;margin-left: 30%;height: 50px;margin-top: 20px;" ng-click="luru()" ng-if="data.userKey==1 || data.userKey==8">瑕疵录入</md-button>
+		<md-button class="md-raised md-primary" style="background-color: #2196f3;color: white;font-size: 22px;width: 40%;margin-left: 30%;height: 50px;margin-top: 20px;" ng-click="goto('query2.html')" ng-if="data.userKey!=1 && data.userKey!=8">瑕疵查询及修正</md-button>
+		<md-button class="md-raised md-primary" style="background-color: #2196f3;color: white;font-size: 22px;width: 40%;margin-left: 30%;height: 50px;margin-top: 20px;" ng-click="luru()" ng-if="data.userKey!=1 && data.userKey!=8">瑕疵补充录入</md-button>
+		<md-button class="md-raised md-primary" style="background-color: #2196f3;color: white;font-size: 22px;width: 40%;margin-left: 30%;height: 50px;margin-top: 20px; " ng-click="goto('yanhuo1.html')" >尾验</md-button>
+		<md-button class="md-raised md-primary" style="background-color: #2196f3;color: white;font-size: 22px;width: 40%;margin-left: 30%;height: 50px;margin-top: 20px; " ng-click="goto('zhuangxiang1.html')" >装箱</md-button>
+		
+	</md-content>
+</div>

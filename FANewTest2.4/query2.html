@@ -1,0 +1,69 @@
+<div ng-controller="query2Ctrl" ng-cloak style="width:100%;height: 100%;">
+	<form name="queryForm" ng-submit="query()">
+	<md-toolbar style="width: 100%;height: 20px;background-color: #eeeeee;color: #616161;">
+		<div class="md-toolbar-tools">
+			<md-button ng-click="goto('choice.html')" style="color: #64b5f6;font-size: 20px;">
+				返回
+			</md-button>
+			<span flex></span>
+			<span style="font-size: 22px;">欢迎使用服装品管APP</span>
+			<!-- fill up the space between left and right area -->
+			<span flex></span>
+			<md-button ng-disabled="queryForm.$invalid" type="submit" style="color: #64b5f6;font-size: 20px;">
+				查询
+			</md-button>
+		</div>
+	</md-toolbar>
+			<div class="container"  ng-if="activated">
+			<md-progress-linear md-mode="indeterminate" class="md-warn"></md-progress-linear>
+		</div>
+	<md-subheader style="border-bottom:1px solid #fafafa;text-align: center;font-size: 20px;background-color: #fafafa;">查询条件</md-subheader>
+
+	<form name="userForm" style="margin-top: 4px;">
+		<div layout="row" layout-wrap >
+			<md-input-container flex="50" style="width: 50%;margin-left: 25%;margin-right: 25%;margin-top: 15px;">
+				<label>产线</label>
+					<md-select ng-model="productionLine" ng-model-options="{trackBy: '$value.ID'}">
+						<md-option ng-repeat="productionLine in productionLineList" ng-value="productionLine">
+							{{productionLine.Name}}
+						</md-option>
+					</md-select>
+			</md-input-container>
+			<br />
+			<md-input-container flex="50" style="width: 50%;margin-left: 25%;margin-right: 25%;margin-top: 2px;">
+				<label>订单</label>
+				<input  ng-model="order" name="order" ng-virtual-keyboard>
+					<div>
+						<div style="color: #42a5f5;">请输入订单</div>
+					</div>
+			</md-input-container>
+			<md-datepicker ng-model="date" md-placeholder="日期/date" flex="100" style="margin-left: 25%;margin-right: 25%;"></md-datepicker>
+			<!--<md-input-container flex="50" style="width: 50%;margin-left: 25%;margin-right: 25%;margin-top: 10px;">
+				<label>时间段</label>
+					<md-select ng-model="time">
+						<md-option ng-repeat="allTime in allTimes" value="{{allTime}}">
+							{{allTime}}
+						</md-option>
+					</md-select>
+			</md-input-container>-->
+		</div>
+	</form>
+	<md-subheader style="border-bottom:1px solid #fafafa;text-align: center;font-size: 20px;background-color: #fafafa;margin-top: 10px;">查询结果</md-subheader>
+	<dtable options="options" rows="list" class="" style="margin-top: 5px;width: 96%;margin-left: 2%;">
+		<column name=""  width="90"><md-button ng-click="detail($row)" class="md-primary" style="margin-top: -6px;margin-left: -5px;">查看明细</md-button></column>
+		<column name="工号     姓名" width="150">{{$row.userID}} {{$row.userName}}</column>
+		<column name="产线" width="100">{{$row.groupID}}</column>
+		<column name="订单" width="100">{{$row.orderForm}}</column>
+		<column name="客人款号" width="100">{{$row.CustomerStyleCode}}</column>
+		<column name="COMB" width="90">{{$row.comb}}</column>
+		<column name="尺码" width="70">{{$row.size}}</column>
+		<column name="款式" width="120">{{$row.category}}</column>
+		<column name="时间段" width="100">{{$row.specificTime}}</column>
+		<!--<column name="瑕疵数量" width="100">{{$row.counts}}</column>
+		<column name="品检产量" width="100">{{$row.output}}</column>-->
+		<!--<column name="不良率" width="100">{{($row.counts/$row.output)*100}}%</column>-->
+		<column name="不良率" width="100">{{$row.bu}}%</column>
+	</dtable>
+	</form>
+	
+</div>

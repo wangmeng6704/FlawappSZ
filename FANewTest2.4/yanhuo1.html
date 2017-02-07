@@ -1,0 +1,349 @@
+<style>
+	body {
+		width: 100%;
+		height: 100%;
+		margin: 0;
+		padding: 0;
+	}
+	
+	#b {
+		position: absolute;
+		width: 70%;
+		height: 80%;
+		background-color: #fafafa;
+		border-radius: 4px;
+		top: 80px;
+		left: 15%;
+		display: none;
+		z-index: 999999;
+		-webkit-animation: b 0.4s;
+		-moz-animation: b 0.4s;
+		-ms-animation: b 0.4s;
+		animation: b 0.4s;
+	}
+	
+	@-webkit-keyframes b {
+		0% {
+			width: 0%;
+			height: 0%;
+			top: 300px;
+			left: 50%;
+		}
+		100% {
+			width: 70%;
+			height: 80%;
+			top: 80px;
+			left: 15%;
+		}
+	}
+	
+	@-moz-keyframes b {
+		0% {
+			width: 0%;
+			height: 0%;
+			top: 300px;
+			left: 50%;
+		}
+		100% {
+			width: 70%;
+			height: 80%;
+			top: 80px;
+			left: 15%;
+		}
+	}
+	
+	@-ms-keyframes b {
+		0% {
+			width: 0%;
+			height: 0%;
+			top: 300px;
+			left: 50%;
+		}
+		100% {
+			width: 70%;
+			height: 80%;
+			top: 80px;
+			left: 15%;
+		}
+	}
+	
+	@keyframes b {
+		0% {
+			width: 0%;
+			height: 0%;
+			top: 300px;
+			left: 50%;
+		}
+		100% {
+			width: 70%;
+			height: 80%;
+			top: 80px;
+			left: 15%;
+		}
+	}
+</style>
+
+<div ng-controller="yanhuo1Ctrl" ng-cloak style="width:100%;height: 100%;">
+
+	<div id="cen" style="position: absolute;width: 100%;height: 100%;background-color:#000000 ;opacity: 0.4;z-index: 9999;display: none;"></div>
+
+	<div style="position: relative;width: 100%;height: 56px;background-color: #eeeeee;color: #616161;text-align: center;font-size: 25px;line-height: 56px;">尾验1</div>
+	<md-button ng-click="goto('choice.html')" style="color: #64b5f6;font-size: 20px;top: -50px;">
+		返回
+	</md-button>
+	<table style="position: absolute;width: 220px;height: 50px;top: 3px;right: 8px;">
+		<tr>
+			<td style="position: relative;width: 50%;height: 50px;">Audit Type:</td>
+			<td style="position: relative;width: 50%;height: 50px;">
+				<section class="model-16">
+								<div class="checkbox">
+									<input ng-model="auditType" ng-click="transfrom()" type="checkbox" value="1s" />
+									<label></label>
+								</div>
+							</section></td>
+		</tr>
+	</table>
+	<table style="position: relative;width: 97.8%;left: 1%;height: 150px;top: -50px;text-align: center;font-size: 18px;color: #616161;">
+		<tr style="position: relative;width: 100%;height: 50px;">
+			<td style="position: relative;width: 10%;height: 50px;">验货日期:</td>
+			<td style="position: relative;width: 15%;height: 50px;"><input readonly="readonly" ng-model="weiyanData.date" style="position: relative;width: 90%;height: 80%;border-style: none;background-color: #f5f5f5;border-radius: 4px;" /></td>
+			<td style="position: relative;width: 10%;height: 50px;">班组:</td>
+			<td style="position: relative;width: 15%;height: 50px;">
+				<select ng-change="changeProductLine()" ng-model="weiyanData.banzu" style="position: relative;width: 90%;height: 80%;border-style: none;background-color: #f5f5f5;border-radius: 4px;">
+					<option ng-repeat="product in productionLineList">{{product.Name}}</option>
+
+				</select>
+			</td>
+			<td style="position: relative;width: 10%;height: 50px;">Auditor:</td>
+			<td style="position: relative;width: 40%;height: 50px;">
+				<table style="position: relative;width: 100%;height: 50px;">
+					<tr style="position: relative;width: 100%;height: 50px;">
+						<td style="position: relative;width: 30%;height: 50px;"><input readonly="readonly" ng-model="weiyanData.UserName" style="position: relative;width: 90%;height: 80%;border-style: none;background-color: #f5f5f5;border-radius: 4px;" /></td>
+						<td style="position: relative;width: 30%;height: 50px;">FEPO#</td>
+						<td style="position: relative;width: 40%;height: 50px;">
+							<input ng-virtual-keyboard ng-model="weiyanData.fepo" ng-blur="focus()" style="position: relative;width: 90%;height: 80%;border-style: none;background-color: #f5f5f5;border-radius: 4px;" />
+						</td>
+					</tr>
+				</table>
+			</td>
+
+		</tr>
+		<tr style="position: relative;width: 100%;height: 50px;">
+			
+			<td style="position: relative;width: 10%;height: 50px;">PO:</td>
+			<td style="position: relative;width: 15%;height: 50px;">
+				<select ng-model="weiyanData.po" ng-change="choose()" style="position: relative;width: 90%;height: 80%;border-style: none;background-color: #f5f5f5;border-radius: 4px;">
+					<option  ng-repeat="po in weiyanData.submitDates.po">{{po}}</option>
+
+				</select>
+			</td>
+            <td style="position: relative;width: 10%;height: 50px;">交期：</td>
+			<td style="position: relative;width: 15%;height: 50px;">
+				<select ng-change="selectDate()" ng-click="aa()" ng-model="weiyanData.submitTime"  style="position: relative;width: 90%;height: 90%;border-style: none;background-color: #f5f5f5;border-radius: 4px;">
+								<option  ng-repeat="a in dates" >{{a.date}}</option>
+								
+										
+									</select>
+			</td>
+			<td style="position: relative;width: 10%;height: 50px;">STYLE:</td>
+			<td style="position: relative;width: 40%;height: 50px;">
+				<table style="position: relative;width: 100%;height: 50px;">
+					<tr style="position: relative;width: 100%;height: 50px;">
+						<td style="position: relative;width: 30%;height: 50px;"><input readonly="readonly" ng-model="weiyanData.Style" style="position: relative;width: 90%;height: 80%;border-style: none;background-color: #f5f5f5;border-radius: 4px;" /></td>
+						<td style="position: relative;width: 30%;height: 50px;">PO QTY:</td>
+						<td style="position: relative;width: 40%;height: 50px;"><input readonly="readonly" type="number" ng-model="weiyanData.PoQty" style="position: relative;width: 90%;height: 80%;border-style: none;background-color: #f5f5f5;border-radius: 4px;" /></td>
+					</tr>
+				</table>   
+			</td>
+		</tr>
+		<tr style="position: relative;width: 100%;height: 50px;">
+			<td style="position: relative;width: 10%;height: 50px;">验收数量:</td>
+			<td style="position: relative;width: 15%;height: 50px;"><input ng-virtual-keyboard type="number" ng-change="changeNo()" ng-model="weiyanData.yanshouNo" style="position: relative;width: 90%;height: 80%;border-style: none;background-color: #f5f5f5;border-radius: 4px;" /></td>
+			<td style="position: relative;width: 10%;height: 50px;">AQL</td>
+			<td style="position: relative;width: 15%;height: 50px;">
+				<select ng-change="changeNo()" ng-model="weiyanData.AQL" style="position: relative;width: 90%;height: 80%;border-style: none;background-color: #f5f5f5;border-radius: 4px;">
+					<option value="1.0">1.0</option>
+					<option value="1.5">1.5</option>
+					<option value="2.0">2.0</option>
+
+				</select>
+			</td>
+			<td style="position: relative;width: 10%;height: 50px;">抽验数量:</td>
+			<td style="position: relative;width: 40%;height: 50px;">
+				<table style="position: relative;width: 100%;height: 50px;">
+					<tr style="position: relative;width: 100%;height: 50px;">
+						<td style="position: relative;width: 30%;height: 50px;"><input readonly="readonly" type="number" ng-model="weiyanData.chouYanNo" style="position: relative;width: 90%;height: 80%;border-style: none;background-color: #f5f5f5;border-radius: 4px;" /></td>
+						<td style="position: relative;width: 30%;height: 50px;">允收数量:</td>
+						<td style="position: relative;width: 40%;height: 50px;"><input readonly="readonly" type="number" ng-model="weiyanData.yunShouNo" style="position: relative;width: 90%;height: 80%;border-style: none;background-color: #f5f5f5;border-radius: 4px;" /></td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		
+		
+	</table>
+
+	<div style="position: relative;width: 97.8%;left: 1%;height: 140px;background-color: #ffffff;top: -50px;">
+		<table style="position: relative;width: 100%;top: 0px;height: 120px;text-align: center;font-size: 18px;color: #616161;">
+			<tr style="position: relative;width: 100%;height: 100%;">
+				<td style="position: relative;height: 100%;width: 15%;left: -26px;">
+					<table style="position: relative;width: 100%;height: 100%;">
+						<tr style="position: relative;width: 100%;height: 50%;">
+							<td>
+								
+							</td>
+						</tr>
+						<tr style="position: relative;width: 100%;height: 50%;">
+							<td>
+							<md-input-container flex="100" style="width: 100%;margin-left: 25%;margin-right: 25%;">
+									<label style="left: 10px;">DefctType</label>
+									<md-select ng-model="weiyanData.CODETAIL.typeGUID"  ng-change="changeDefectType1()" >
+										<md-option ng-value="defectType.GUID" ng-repeat="defectType in defectTypeList1" >
+											{{defectType.DefectTypeName || 'DefectType'}}
+										</md-option>
+									</md-select>
+									
+								</md-input-container>
+							</td>
+						</tr>
+					</table>
+				</td>
+				<td style="position: relative;height: 100%;width: 20%;">
+					<table style="position: relative;width: 100%;height: 100%;">
+						<tr style="position: relative;width: 100%;height: 50%;">
+							<td>
+								
+								
+							</td>
+						</tr>
+						<tr style="position: relative;width: 100%;height: 50%;">
+							<td>
+								<md-input-container flex="100" style="width: 100%;margin-left: 25%;margin-right: 25%;">
+									<label style="left: 10px;">DefctCode</label>
+									<md-select ng-model="weiyanData.CODETAIL.codeGUID" ng-change="changeDefectCode()"  >
+										<md-option ng-value="defectCode.GUID" ng-repeat="defectCode in defectCodeList1" >
+											{{defectCode.DefectName || 'DefectCode'}}
+										</md-option>
+									</md-select>
+								</md-input-container>
+								
+								
+							</td>
+						</tr>
+					</table>
+				</td>
+				<td style="position: relative;height: 100%;width: 6%;"></td>
+				<td style="position: relative;height: 100%;width: 1%;">
+					<table style="position: relative;width: 100%;height: 100%;">
+						<tr style="position: relative;width: 100%;height: 50%;">
+							<td></td>
+						</tr>
+						<tr style="position: relative;width: 100%;height: 50%;">
+							<td>QTY:</td>
+						</tr>
+					</table>
+				</td>
+				<td style="position: relative;height: 100%;width: 16%;">
+					<table style="position: relative;width: 100%;height: 100%;">
+						<tr style="position: relative;width: 100%;height: 50%;">
+							<td>
+								
+							</td>
+						</tr>
+						<tr style="position: relative;width: 100%;height: 50%;">
+							<td>
+								<button ng-click="mins()" style="position: relative;border-style: none;background-color: #ffffff;margin-top: 0px;left: 0px;font-size: 18px;border-radius: 50%;width: 25px;height: 25px;">-</button>
+								<input ng-virtual-keyboard type="number" ng-change="changeQty()" ng-model="weiyanData.CODETAIL.QTY" style="position: relative;width: 40%;height: 80%;border-style: none;background-color: #f5f5f5;border-radius: 4px;left: 6px;" />
+								<button ng-click="maxs()" style="position: relative;border-style: none;background-color: #ffffff;margin-top: 0px;left: 12px;font-size: 18px;border-radius: 50%;width: 25px;height: 25px;">+</button>
+								<!--<select style="position: relative;width: 90%;height: 80%;border-style: none;background-color: #fafafa;border-radius: 4px;background-color: #ffffff;">
+										<option value="volvo">Volvo</option>
+										<option value="saab">Saab</option>
+										<option value="opel">Opel</option>
+										<option value="audi">Audi</option>
+									</select>-->
+							</td>
+						</tr>
+					</table>
+				</td>
+				<td style="position: relative;height: 100%;width: 1%;"></td>
+				<td style="position: relative;height: 100%;width: 10%;">
+					<table style="position: relative;width: 100%;height: 100%;">
+						<tr style="position: relative;width: 100%;height: 30%;margin-top: 0px;">
+							<td>
+								<button ng-click="getImage()" style="position: relative;border-style: none;background-color: transparent;margin-top: 20px;"><img src="img/cam.png" style="position: relative;width: 30px;height: 30px;"/></button>
+							</td>
+						</tr>
+						<tr style="position: relative;width: 100%;height: 80%;">
+							<td>
+								<button ng-click="up()" style="position: relative;border-style: none;color:#757575;font-size: 14px;width: 80px;height: 27px;">上传图片</button>
+								<button ng-click="delect()" style="position: relative;border-style: none;color:#757575;font-size: 14px;width: 80px;height: 27px;top:8px ;">删除图片</button>
+							</td>
+						</tr>
+					</table>
+
+				</td>
+				<td style="position: relative;height: 100%;width: 20%;background-color: #f5f5f5;top: 15px;"><input type="image" ng-src="{{weiyanData.CODETAIL.imgSrc}}" style="position: relative;width: 150px;height: 105px;border-style: none;background-color: #ffffff;border-radius: 4px;top: 3px;" value="图片（拍后自动插入）" /></td>
+
+			</tr>
+		</table>
+	</div>
+
+	<div style="position: relative;width: 100%;height: 200px;background-color: transparent;top: -50px;overflow: auto;">
+		<div style="position: relative;width: 100%;height: 600px;">
+			<table style="position: relative;width: 97.8%;left: 1%;top: 10px;text-align: center;font-size: 18px;color: #616161;border: 1px solid #f5f5f5;">
+				<tr style="position: relative;width: 100%;height: 40px;border-bottom: 1px solid #e0e0e0;background-color: #b2ebf2;color: #ffffff;text-shadow: 1px 1px 1px #9e9e9e;">
+					<td style="position: relative;width: 22%;height: 40px;">瑕疵类别</td>
+					<td style="position: relative;width: 22%;height: 40px;">瑕疵名</td>
+					<td style="position: relative;width: 22%;height: 40px;">数量</td>
+					
+					<td style="position: relative;width: 24%;height: 40px;">缩图</td>
+
+				</tr>
+				<tr ng-repeat="code in weiyanData.codeDtail" style="position: relative;width: 100%;height: 40px;border-bottom: 1px solid #e0e0e0;">
+
+					<td style="position: relative;width: 19%;height: 40px;color: #666666;">{{code.defectType}}</td>
+					<td style="position: relative;width: 19%;height: 40px;color: #666666;">{{code.defectName}}</td>
+					<td style="position: relative;width: 19%;height: 40px;color: #666666;">{{code.QTY}}</td>
+					
+					<td style="position: relative;width: 24%;height: 40px;" ng-click="big($index);">
+						<img src="{{code.imgSrc}}" style="position: relative;width: 38px;height: 38px;" />
+						<button style="position: relative;border-style: none;left: 40px;top: -5px;background-color: transparent;" ng-click="delectDtails($index)"><img style="position: relative;width: 25px;height: 25px;text-align: center;top: 3px;" src="img/dt.png"/></button>
+					</td>
+					<!--<td ng-click="delectDtails($index)" style="position: relative;width: 20%;height: 40px;">删除</td>-->
+
+				</tr>
+
+			</table>
+		</div>
+	</div>
+	<table style="position: relative;width: 97.8%;left: 1%;top: 0px;text-align: right;font-size: 18px;color: #616161;">
+	<tr>
+		<td style="position: relative;width: 85%;">累计数量：</td>
+		<td ng-model="weiyanData.output" style="position: relative;width: 15%;color: #666666;left: -10%;">{{weiyanData.output}}</td>
+	</tr>
+	</table>
+	
+
+	<button ng-click="upLoad()" style="float: left;width: 20%;margin-left: 10%;height: 40px;text-align: center;line-height: 36px;background-color: #00b8d4;color: #ffffff;font-size: 20px;border-style: none;margin-top: 20px;">添加瑕疵明细</button>
+	<button style="float: left;width: 20%;margin-left: 10%;height: 40px;text-align: center;line-height: 36px;background-color: #00b8d4;color: #ffffff;font-size: 20px;border-style: none;margin-top: 20px;" ng-click="next1(1)">上衣尺寸</button>
+	<button style="float: left;width: 20%;margin-left: 10%;height: 40px;text-align: center;line-height: 36px;background-color: #00b8d4;color: #ffffff;font-size: 20px;border-style: none;margin-top: 20px;" ng-click="next1(2)">裤子尺寸</button>
+
+	<div id="b">
+		<button style="float: right;margin-right:20px;margin-top: 20px;color: #ffffff;font-size: 18px;border-style: none;border-radius: 50%;" onclick="clo();">X</button>
+		<img style="position: relative;width: 60%;height: 80%;top: 10%;left: 20%;" src="{{bigImg}}" />
+	</div>
+</div>
+	<script>
+		function big() {
+			document.getElementById('b').style.display = "block";
+			document.getElementById('cen').style.display = "block";
+
+		}
+
+		function clo() {
+			document.getElementById('b').style.display = "none";
+			document.getElementById('cen').style.display = "none";
+
+		}
+	</script>
+

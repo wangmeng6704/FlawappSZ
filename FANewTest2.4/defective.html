@@ -1,0 +1,212 @@
+<style>
+	md-input-container{
+		padding-bottom: 2px;
+		margin-bottom: 0px;
+	}
+	
+	.defect{
+		background-color: #2196f3 !important;
+		
+	}
+	
+</style>
+		<div id="log" style="position: absolute;width: auto;height: 50px;border-radius: 6px;background-color: #000000;color: #ffffff;text-align: center;line-height: 50px;top: 20px;z-index: 99999;left: 40px;opacity: 0.8;padding-left: 20px;padding-right: 20px;display: none;"></div>
+		<div id="ing" style="position: absolute;width: 100%;height: 100%;background-color: #000000;opacity: 0.2;display: block;z-index: 1;"></div>
+		<script>
+	function ttt(n){
+		document.getElementById('log').innerHTML=n;
+		document.getElementById('log').style.display="block";
+		setTimeout(function() {
+					document.getElementById('log').style.display="none";
+				}, 2800);
+	}
+</script>
+
+
+<div id='defective' layout="column" layout-fill ng-controller="defectiveCtrl" data-ng-init="load()" style="z-index: -1;">
+	<md-toolbar style="width: 100%;height: 20px;background-color: #eeeeee;color: #616161;">
+		<div class="md-toolbar-tools">
+			<md-button ng-click="back()" style="color: #64b5f6;font-size: 20px;">
+				返回登录页面
+			</md-button>
+			<span flex></span>
+			<span>瑕疵品录入</span>
+			<!-- fill up the space between left and right area -->
+			<span flex></span>
+           <md-button id='card' ng-click="showOrder()" style="color: #64b5f6;font-size: 20px;display: block;">
+				刷卡
+			</md-button> 
+		</div>
+	</md-toolbar>
+
+	<div class="container" ng-if="activated">
+		<md-progress-linear md-mode="indeterminate" class="md-warn"></md-progress-linear>
+	</div>
+	<!--<md-subheader style="border-bottom:1px solid #fafafa;text-align: center;font-size: 20px;background-color: #fafafa;">瑕疵品录入</md-subheader>-->
+	<md-content layout="row" style="height: 30px;padding: 0px;" layout-padding>
+		<div flex>创建人(UserId):{{data.userName}}</div>
+		<div flex style="background-color:{{FLAWDETAIL.fill}};height: 40px;">瑕疵个数/defect QTY:{{data.flawTable.counts}}</div>
+		<div flex>创建日期(Date):{{timeNow}}</div>
+	</md-content>
+	<md-content style="height: 100%;" layout="row" layout-wrap layout-padding>
+		<div flex="25">
+			<div layout="row" layout-wrap>
+				<form name="defectForm">
+					<div flex="100" >瑕疵类别:</div>  <!--style="margin-bottom: 0px;background-color: #2196f3;width: 90%;height: 36px;font-size: 18px;"-->
+					<md-button flex class=" aaa md-primary md-raised " ng-class="{$index:'show',100:'defect'}[defectType.show]" ng-repeat="defectType in defectTypeList" ng-click="changeDefectType(defectType,$index)" style="margin-bottom: 0px;background-color:{{FLAWDETAIL.fill}};width: 90%;height: 36px;font-size: 18px;">{{defectType.DefectTypeName}}/{{defectType.LangDesc}}</md-button>
+					<md-input-container flex="100" style="width: 100%;margin-top: 20px;">
+						<label>瑕疵编号/defect code:</label>
+						<md-select ng-model="FLAWDETAIL.flawGUID" ng-change="selectDefectCode()" required name="defectCode">
+							<md-option ng-repeat="defectCode in defectCodeList" ng-value="defectCode.GUID">
+								{{defectCode.DefectName}}
+							</md-option>
+						</md-select>
+						<div ng-messages="defectForm.defectCode.$error">
+							<div ng-message="required" style="color: #42a5f5;">请选择瑕疵编号</div>
+						</div>
+					</md-input-container>
+
+					<md-datepicker ng-model="FLAWDETAIL.date" flex="100" md-placeholder="日期/date" style="width: 100%;margin-top: -35px;" ng-disabled="data.userKey==1 || data.userKey==8" required name="date"></md-datepicker>
+					<md-input-container flex="100" style="width: 100%;margin-top: 0px;">
+						<div ng-messages="defectForm.date.$error">
+							<div ng-message="required">请选择日期</div>
+						</div>
+					</md-input-container>
+
+					<md-input-container flex="100" style="width: 100%;margin-top: -15px;">
+						<label>时间段/time:</label>
+						<md-select ng-model="FLAWDETAIL.specificTime" ng-disabled="data.userKey==1 || data.userKey==8" required name="specificTime">
+							<md-option ng-repeat="allTime in allTimes" value="{{allTime}}">
+								{{allTime}}
+							</md-option>
+						</md-select>
+						<div ng-messages="defectForm.specificTime.$error">
+							<div ng-message="required">请选择时间段</div>
+						</div>
+					</md-input-container>
+					<md-input-container flex="100" style="width: 100%;margin-top: 5px;">
+						<label>产线</label>
+						<input ng-model="data.flawTable.groupID" ng-disabled="true">
+					</md-input-container>
+					<md-input-container flex="100" style="width: 100%;">
+						<label>订单</label>
+						<input ng-model="data.flawTable.orderForm" ng-disabled="true">
+					</md-input-container>
+					
+				</form>
+	<!--			<md-button flex ng-click="showOrder()" class=" aaa md-primary md-raised "  style="margin-bottom: 0px;background-color:#2962FF;width: 90%;height: 36px;font-size: 18px;">刷卡</md-button>-->
+			</div>
+
+		</div>
+		<div flex="40" id="front" style="margin-top: 15px;">
+
+		</div>
+		<div flex="35" id="back" style="margin-top: 15px;">
+
+		</div>
+		
+
+        
+
+	<md-button ng-click="clear($event)" ng-if="data.userKey==1 || data.userKey==8" style="position:absolute;width: 22%;background-color: #2196f3;height: 50px;color: #ffffff;margin-top: 560px;margin-left: -70%;font-size: 16px;">
+		重新录入(style change)
+	</md-button>
+	<md-button ng-click="goto('submit.html')" ng-if="data.edit==true" style="position:absolute;width: 22%;background-color: #2196f3;height: 50px;color: #ffffff;margin-top: 560px;font-size: 18px;margin-left: -47%;">
+		数据提交(submit)
+	</md-button> 
+	
+	<md-button ng-click="queryProduct()" style="position:absolute;width: 22%;background-color: #2196f3;height: 50px;color: #ffffff;margin-top: 560px;font-size: 18px;margin-left: -24%;">
+		产线瑕疵查询
+	</md-button>
+	</md-content>
+	
+	
+	
+	<div id='order'  style="position: absolute;width: 46%;height: 595px;background-color: #fafafa;display: block;left: 27%;border-radius: 6px;box-shadow: 2px 2px 8px 2px #bdbdbd;z-index: 2;top: 80px;">
+       
+        
+        	 <label  ng-click="hideOrder()" style="position: absolute;margin-left: 92%;font-size: 22px;top: 5px;color: #ffffff;width: 25px;height: 25px;border-radius: 50%;background-color: #bdbdbd;text-align: center;line-height: 25px;">X</label>
+			<div layout="row" layout-wrap>
+					<md-input-container flex="100"  style="width: 60%;margin-left: 20%;margin-right: 20%;margin-top: 38px;" >
+					<label>CardID</label>
+					<input id="cardId" ng-model="ruid"  type="number" ng-blur="aa()" ng-click='selectAll()' ng-virtual-keyboard>
+					
+				</md-input-container>
+				
+				
+			
+				<md-input-container flex="100" style="width: 60%;margin-left: 20%;margin-right: 20%;margin-top: 14px;">
+					<label>订单</label>
+					<input ng-model="data.flawTable.orderForm" disabled="true">
+					<!--<div ng-messages="orderForm.orderForm.$error">
+						<div ng-message="required" style="color: #42a5f5;">请输入订单</div>
+					</div>-->
+				</md-input-container>
+				<md-input-container flex="100" style="width: 60%;margin-left: 20%;margin-right: 20%;margin-top: 14px;">
+					<label>COMB</label>
+					<input ng-model="data.flawTable.comb"  disabled="true">
+					<!--<div ng-messages="orderForm.comb.$error">
+						<div ng-message="required" style="color: #42a5f5;">请输入COMB</div>
+					</div>-->
+				</md-input-container>
+				<md-input-container flex="100" style="width: 60%;margin-left: 20%;margin-right: 20%;margin-top: 14px;">
+					<label>客户款号(Style)</label>
+					<input ng-model="data.flawTable.CustomerStyleCode"  disabled="true">
+					<!--<div ng-messages="orderForm.CustomerStyleCode.$error">
+						<div ng-message="required" style="color: #42a5f5;" disabled="true">请输入客户款号</div>
+					</div>-->
+				</md-input-container>
+				<md-input-container flex="100" style="width: 60%;margin-left: 20%;margin-right: 20%;margin-top: 14px;">
+					<label>BarCode</label>
+					<input ng-model="data.flawTable.barCode"  disabled="true">					
+				</md-input-container>
+				<md-input-container flex="100" style="width: 60%;margin-left: 20%;margin-right: 20%;margin-top: 14px;">
+					<label>品检产量</label>
+					<input ng-model="data.flawTable.output" required name="orderForm" disabled="true">
+					
+				</md-input-container>
+				<md-input-container flex="100" style="width: 60%;margin-left: 20%;margin-right: 20%;margin-top: 14px;">
+					<label>产线</label>
+					<md-select id='productionLine' ng-model="data.flawTable.groupGUID" ng-change="selectProductionLine()" required name="productionLine" >
+						<md-option ng-repeat="productionLine in productionLineList" ng-value="productionLine.ID">
+							{{productionLine.Name}}
+						</md-option>
+					</md-select>					
+				</md-input-container>
+				<md-input-container flex="100" style="width: 60%;margin-left: 20%;margin-right: 20%;margin-top: 14px;">
+					<label>款式</label>
+					<md-select id='category' ng-model="data.flawTable.categoryCode" ng-change="selectCategory()" required name="category"  >
+						<md-option ng-repeat="model in models" ng-value="model.StyleCode">
+							{{model.StyleName}}
+						</md-option>
+					</md-select>
+					<!--<div ng-messages="orderForm.category.$error">
+						<div ng-message="required" style="color: #42a5f5;">请选择款式</div>
+					</div>-->
+				</md-input-container>
+				
+				
+			</div>
+			<md-subheader style="border-bottom:1px solid #fafafa;text-align: center;font-size: 20px;background-color: #ffffff;height: 30px;line-height: 0px;margin-top: 10px;">样品核可</md-subheader>
+
+			<div layout="row" layout-wrap>
+				<div flex="100" style="width: 70%;margin-left: 15%;margin-right: 15%;">
+					<md-checkbox class="md-primary" ng-repeat="heke in hekes" ng-click="toggle(heke)" ng-checked="exists(heke)">
+						{{ heke }}
+					</md-checkbox>
+				</div>
+				<md-input-container flex="100" style="margin-top: 0;width: 60%;margin-left: 20%;margin-right: 20%;">
+					<label style="display: none;">核可</label>
+					<input ng-model="data.flawTable.heke" name="heke"  style="display: none;">
+				</md-input-container>
+				<md-input-container flex="100" style="width: 60%;margin-left: 20%;margin-right: 20%;">
+					<label style="font-size: 20px;" >尺码</label>
+					<input ng-model="data.flawTable.size" name="size" disabled="true">
+					<!--<div>
+						<div style="color: #42a5f5;">请输入尺码</div>
+					</div>-->
+				</md-input-container>
+			</div>
+       </div>
+	
+</div>

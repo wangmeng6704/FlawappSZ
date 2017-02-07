@@ -1,0 +1,200 @@
+<style>
+	md-radio-button {
+		display: inherit;
+	}
+	md-checkbox {
+		margin: 0px;
+	}
+	md-content {
+		padding: 0px !important;
+	}
+	md-input-container {
+		margin: 0;
+	}
+	#log{
+		position: absolute;
+		top: 10px;
+		left: 38%;
+		height: 40px;
+		width: 260px;
+		padding: 6px;
+		border-radius: 4px;
+		background-color: #000000;
+		color: #ffffff;
+		font-size: 18px;
+		text-align: center;
+		line-height: 40px;
+		display: none;
+		z-index: 9999;
+		animation: mylog 0.5s;
+		-moz-animation: mylog 0.5s;
+		-webkit-animation: mylog 0.5s;
+		-o-animation: mylog 0.5s;
+	}
+	@keyframes mylog {
+		0% {
+			top: -20px;
+		}
+		
+		100% {
+			top: 10px;
+		}
+	}
+	
+	@-moz-keyframes mylog {
+		0% {
+			top: -20px;
+		}
+		
+		100% {
+			top: 10px;
+		}
+	}
+	
+	@-webkit-keyframes mylog {
+		0% {
+			top: -20px;
+		}
+		
+		100% {
+			top: 10px;
+		}
+	}
+	
+	@-o-keyframes mylog {
+		0% {
+			top: -20px;
+		}
+		
+		100% {
+			top: 10px;
+		}
+	}
+</style>
+<div id="log" ></div>
+<script>
+	function fff(n){
+		document.getElementById('log').innerHTML=n;
+		document.getElementById('log').style.display="block";
+		setTimeout(function() {
+					document.getElementById('log').style.display="none";
+				}, 2800);
+	}
+</script>
+<div ng-controller="submitCtrl" ng-cloak style="width:100%;height: 100%;">
+	<form name="submitForm" ng-submit="submit()">
+		<md-toolbar style="width: 100%;height: 20px;background-color: #eeeeee;color: #616161;">
+			<div class="md-toolbar-tools">
+				<span flex style="position: relative;width: 33.3%;">
+				<md-button ng-click="goto('defective.html')" style="color: #64b5f6;font-size: 20px;float: left;">
+					返回瑕疵录入
+				</md-button>
+				</span>
+				<span style="font-size: 22px;width: 33.3%;text-align: center;">欢迎使用服装品管APP</span>
+				<!-- fill up the space between left and right area -->
+				<span flex style="position: relative;width: 33.3%;">
+				<md-button ng-disabled="submitForm.$invalid" type="submit" style="color: #64b5f6;font-size: 20px;float: right;">
+					保存并继续
+				</md-button>
+				</span>
+			</div>
+		</md-toolbar>
+			<div class="container"  ng-if="activated">
+			<md-progress-linear md-mode="indeterminate" class="md-warn"></md-progress-linear>
+	</div>
+	<md-subheader style="border-bottom:1px solid #fafafa;text-align: center;font-size: 20px;background-color: #fafafa;">数据提交</md-subheader>
+		<md-content layout="row" layout-padding>
+			<div flex>
+				<md-radio-group ng-model="data.flawTable.unit" style="margin-left: 60px;">
+					<md-radio-button value="CM" class="md-primary">厘米(CM)</md-radio-button>
+					<md-radio-button value="IN" class="md-primary">英寸(IN)</md-radio-button>
+				</md-radio-group>
+			</div>
+			<div flex></div>
+			<div flex></div>
+		</md-content>
+		<md-content layout="row" style="text-align: center;margin-top: 20px;width: 90%;margin-left: 5%;">
+			<div flex="10"></div>
+			<div flex="20">GMT1</div>
+			<div flex="20">GMT2</div>
+			<div flex="20">GMT3</div>
+			<div flex="20">GMT4</div>
+			<div flex="20">GMT5</div>
+		</md-content>
+
+		<md-content layout="row" layout-padding style="text-align: center;margin-top: 15px;width: 90%;margin-left: 5%;">
+			<div flex="10" style="margin-top: 10px;">尺码</div>
+			<div flex="20">
+				<md-input-container>
+					<label style="font-size: 10px;left: 0px;">至少录入3件GMT</label>
+					<input ng-virtual-keyboard ng-model="chicun.GMT1" ng-change='valsize(chicun.GMT1,stylePartList,1)' required />
+				</md-input-container>
+			</div>
+			<div flex="20">
+				<md-input-container>
+					<label style="font-size: 10px;left: 0px;">至少录入3件GMT</label>
+					<input ng-virtual-keyboard ng-model="chicun.GMT2" ng-change='valsize(chicun.GMT2,stylePartList,2)' required />
+				</md-input-container>
+			</div>
+			<div flex="20">
+				<md-input-container>
+					<label style="font-size: 10px;left: 0px;">至少录入3件GMT</label>
+					<input ng-model="chicun.GMT3" ng-change='valsize(chicun.GMT3,stylePartList,3)' required ng-virtual-keyboard/>
+				</md-input-container>
+			</div>
+			<div flex="20">
+				<md-input-container>
+					<label style="font-size: 10px;left: 0px;">至少录入3件GMT</label>
+					<input ng-model="chicun.GMT4" ng-change='valsize(chicun.GMT4,stylePartList,4)' ng-virtual-keyboard/>
+				</md-input-container>
+			</div>
+			<div flex="20">
+				<md-input-container>
+					<label style="font-size: 10px;left: 0px;">至少录入3件GMT</label>
+					<input ng-model="chicun.GMT5" ng-change='valsize(chicun.GMT5,stylePartList,5)' ng-virtual-keyboard/>
+				</md-input-container>
+			</div>
+		</md-content>
+
+		<md-content layout="row" layout-padding style="text-align: center;width: 90%;margin-left: 5%;" ng-repeat="stylePart in stylePartList" >
+			<div flex="10" style="margin-top: 10px;">{{stylePart.PartName}}</div>
+			<div flex="20">
+				<md-input-container>   <!-- {{stylePart.PartCode}}1-->
+					<input ng-model="stylePart.GMT1" ng-change="save('GMT1',$index,stylePart.GMT1)" ng-virtual-keyboard/>
+				</md-input-container>
+			</div>
+			<div flex="20">
+				<md-input-container>
+					<input ng-model="stylePart.GMT2" ng-change="save('GMT2',$index,stylePart.GMT2)" ng-virtual-keyboard/>
+				</md-input-container>
+			</div>
+			<div flex="20">
+				<md-input-container>
+					<input ng-model="stylePart.GMT3" ng-change="save('GMT3',$index,stylePart.GMT3)"  ng-virtual-keyboard/>
+				</md-input-container>
+			</div>
+			<div flex="20">
+				<md-input-container>
+					<input ng-model="stylePart.GMT4" ng-change="save('GMT4',$index,stylePart.GMT4)"  ng-virtual-keyboard/>
+				</md-input-container>
+			</div>
+			<div flex="20">
+				<md-input-container>
+					<input ng-model="stylePart.GMT5" ng-change="save('GMT5',$index,stylePart.GMT5)"  ng-virtual-keyboard/>
+				</md-input-container>
+			</div>
+		</md-content>
+
+		<md-content layout="row" layout-padding>
+			<div flex="100">
+				<md-input-container class="md-block" style="margin-top: 40px;width: 80%;margin-left: 10%;">
+					<label style="font-size: 22px;">品检产量(inspection QTY)</label>
+					<input ng-model="data.flawTable.output" type="number" min="1" name="output" required style="font-size: 20px;" ng-virtual-keyboard/>
+					<div ng-messages="submitForm.output.$error">
+						<div ng-message="required">请输入数量</div>
+					</div>
+				</md-input-container>
+			</div>
+		</md-content>
+	</form>
+</div>

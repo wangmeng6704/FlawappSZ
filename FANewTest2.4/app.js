@@ -519,6 +519,13 @@ angular
 						isArray: true
 					}
 				}),
+				getOutput: $resource(API_HOST + '/oauth2/getOutput', null, {
+					get: {
+						method: 'post',
+						isArray: true
+					}
+				}),
+
 				postFlawTable: $resource(API_HOST + '/oauth2/postFlawTable', null, {
 					post: {
 						method: 'post',
@@ -573,26 +580,26 @@ angular
 						isArray: true
 					}
 				}),
-				finalTable : $resource(API_HOST + '/oauth2/FinalTable', null, {
+				finalTable: $resource(API_HOST + '/oauth2/FinalTable', null, {
 					post: {
 						method: 'post',
 						isArray: false
 					}
 				}),
-				
+
 				finalDetail: $resource(API_HOST + '/oauth2/FinalDetail', null, {
 					post: {
 						method: 'post',
 						isArray: false
 					}
 				}),
-				packageDetail : $resource(API_HOST + '/oauth2/Package_Detail', null, {
+				packageDetail: $resource(API_HOST + '/oauth2/Package_Detail', null, {
 					post: {
 						method: 'post',
 						isArray: false
 					}
 				}),
-				
+
 				packageTable: $resource(API_HOST + '/oauth2/Package_Tabel', null, {
 					post: {
 						method: 'post',
@@ -739,11 +746,12 @@ angular
 				size: "", //size
 				categoryCode: "", //款式Code
 				category: "", //款式
-				barCode: '',
 				counts: 0, //总瑕疵数
 				output: "", //
 				heke: null, //
 				unit: "CM",
+				isSys: 'Y',
+				barcode:'',
 				gmt: {}
 
 			},
@@ -752,90 +760,90 @@ angular
 			add: [],
 			del: []
 		};
-		
-			$rootScope.weiyanData = {
-			GUID: $rootScope.NewGuid(),//GUID
-			date: $rootScope.getDate(),//验货日期
-			UserName: '',              //Auditor
-			userID:'',
-			fepo: null,               //FEPO
-			banzu: '',                //班组
-			po: '',                  //PO
-			pos: {},                 //PO的集合，不上传
-			Style: '',               //STYLE
-			PoQty: '',               //PO QTY
-			yanshouNo: '',            //验收数量
-			AQL: "",                  //AQL
-			chouYanNo: '',             //抽验数量
-			yunShouNo: '',             //允收数量
-			submitTime: '',            //交期
-			submitDates: [],           //交期和PO的组合，不上传 
-			auditType: '1st',          //Audit Type
-			output:null,               //累计数量，不上传
-			codeDtail: [],             //瑕疵明细表
-			CODETAIL: {                //单次瑕疵明细， 不上传
-				dataGUID:'',            //主表GUID
+
+		$rootScope.weiyanData = {
+			GUID: $rootScope.NewGuid(), //GUID
+			date: $rootScope.getDate(), //验货日期
+			UserName: '', //Auditor
+			userID: '',
+			fepo: null, //FEPO
+			banzu: '', //班组
+			po: '', //PO
+			pos: {}, //PO的集合，不上传
+			Style: '', //STYLE
+			PoQty: '', //PO QTY
+			yanshouNo: '', //验收数量
+			AQL: "", //AQL
+			chouYanNo: '', //抽验数量
+			yunShouNo: '', //允收数量
+			submitTime: '', //交期
+			submitDates: [], //交期和PO的组合，不上传 
+			auditType: '1st', //Audit Type
+			output: null, //累计数量，不上传
+			codeDtail: [], //瑕疵明细表
+			CODETAIL: { //单次瑕疵明细， 不上传
+				dataGUID: '', //主表GUID
 				date: '',
-				userID:'',
-				groupID:'',
-				GUID:$rootScope.NewGuid(),//GUID
-				defectType: '',            //瑕疵类型
-				typeGUID: '',              //瑕疵类型GUID
-				codeGUID: '',              //瑕疵名GUID
-				defectName: '',            //瑕疵名
-				defectCode: '',            //瑕疵代码
-				QTY: 0,                    //瑕疵数量
-				imgSrc: 'img/white.jpg'     //瑕疵图片路径
+				userID: '',
+				groupID: '',
+				GUID: $rootScope.NewGuid(), //GUID
+				defectType: '', //瑕疵类型
+				typeGUID: '', //瑕疵类型GUID
+				codeGUID: '', //瑕疵名GUID
+				defectName: '', //瑕疵名
+				defectCode: '', //瑕疵代码
+				QTY: 0, //瑕疵数量
+				imgSrc: 'img/white.jpg' //瑕疵图片路径
 			},
-			category:"",                    //尺寸表名称 ，不上传
-			combs: {},                      //COMB的集合，不上传
-			sizes: {},                      //COMB和SIZE的组合，不上传
-			result: 'FAIL',                 //result               
-			sizeImg: 'img/white.jpg',       //SIZE瑕疵图片
-			unit: "CM",                     //尺寸的单位
-            gmt:{}                          //SIZE的瑕疵组合
+			category: "", //尺寸表名称 ，不上传
+			combs: {}, //COMB的集合，不上传
+			sizes: {}, //COMB和SIZE的组合，不上传
+			result: 'FAIL', //result               
+			sizeImg: 'img/white.jpg', //SIZE瑕疵图片
+			unit: "CM", //尺寸的单位
+			gmt: {} //SIZE的瑕疵组合
 		}
 
 		$rootScope.lastData = {
-			GUID: $rootScope.NewGuid(),//GUID
-			date: $rootScope.getDate(),//验货日期
-			userName: '',//Auditor
-			userID:'',
-			fepo: null,//FEPO
-			banzu: '',//班组
-			po: '',//PO
-			poQty:'',//PO QTY
-			submitTime: '',//交期
-			submitDates: {},//交期和PO的组合，不上传
-			pos: {},//PO的集合
-			style: '',//Style
-			packageNo: '',//抽验箱号
-			tiezhi: 'FAIL',//UCC128贴纸
-			MD: 'FAIL',//MD
-			fuliao: 'FAIL',//包装方法/辅料
-			inerNumber: 'FAIL',//箱内件数
-			daima: 'FAIL',//目的港/代码
-			COC: 'FAIL',//GB/COC
-			result: 'FAIL',//Result
-			auditType: '1st',//Audit Type
-            output:null,//累计数量
-			defectDetail: {//单次瑕疵明细
-				dataGUID:'',//主表GUID
-				date:'',
-				userID:'',
-				groupID:'',
-				GUID:$rootScope.NewGuid(),//GUID
-				defectType: '',//瑕疵类别
-				typeGUID: '',//类别GUID
-				codeGUID: '',//瑕疵名GUID
-				defectName: '',//瑕疵名
-				defectCode: '',//瑕疵代码
-				QTY: 0,//瑕疵数量
-				imgSrc: 'img/white.jpg'//瑕疵图片路径
+			GUID: $rootScope.NewGuid(), //GUID
+			date: $rootScope.getDate(), //验货日期
+			userName: '', //Auditor
+			userID: '',
+			fepo: null, //FEPO
+			banzu: '', //班组
+			po: '', //PO
+			poQty: '', //PO QTY
+			submitTime: '', //交期
+			submitDates: {}, //交期和PO的组合，不上传
+			pos: {}, //PO的集合
+			style: '', //Style
+			packageNo: '', //抽验箱号
+			tiezhi: 'FAIL', //UCC128贴纸
+			MD: 'FAIL', //MD
+			fuliao: 'FAIL', //包装方法/辅料
+			inerNumber: 'FAIL', //箱内件数
+			daima: 'FAIL', //目的港/代码
+			COC: 'FAIL', //GB/COC
+			result: 'FAIL', //Result
+			auditType: '1st', //Audit Type
+			output: null, //累计数量
+			defectDetail: { //单次瑕疵明细
+				dataGUID: '', //主表GUID
+				date: '',
+				userID: '',
+				groupID: '',
+				GUID: $rootScope.NewGuid(), //GUID
+				defectType: '', //瑕疵类别
+				typeGUID: '', //类别GUID
+				codeGUID: '', //瑕疵名GUID
+				defectName: '', //瑕疵名
+				defectCode: '', //瑕疵代码
+				QTY: 0, //瑕疵数量
+				imgSrc: 'img/white.jpg' //瑕疵图片路径
 
 			},
-			DefectDetails: [],//瑕疵明细表
-			vasImg: []//VAS图片路径表 
+			DefectDetails: [], //瑕疵明细表
+			vasImg: [] //VAS图片路径表 
 
 		}
 
@@ -846,7 +854,7 @@ angular
 			$rootScope.weiyanData.fepo = null;
 			$rootScope.weiyanData.banzu = '';
 			$rootScope.weiyanData.po = '';
-			$rootScope.weiyanData.output=null;
+			$rootScope.weiyanData.output = null;
 			$rootScope.weiyanData.pos = {};
 			$rootScope.weiyanData.Style = '';
 			$rootScope.weiyanData.PoQty = '';
@@ -862,11 +870,11 @@ angular
 			$rootScope.weiyanData.combs = {};
 			$rootScope.weiyanData.sizes = {};
 			$rootScope.weiyanData.CODETAIL = {
-				dataGUID:'',
-				date:'',
-				userID:'',
-				groupID:'',
-				GUID:$rootScope.NewGuid(),
+				dataGUID: '',
+				date: '',
+				userID: '',
+				groupID: '',
+				GUID: $rootScope.NewGuid(),
 				defectType: '',
 				typeGUID: '',
 				codeGUID: '',
@@ -879,7 +887,7 @@ angular
 			$rootScope.weiyanData.sizeDetail = [];
 			$rootScope.weiyanData.sizeImg = '';
 			$rootScope.weiyanData.unit = "CM";
-			$rootScope.weiyanData.category='';
+			$rootScope.weiyanData.category = '';
 			$rootScope.categorySize = [{
 				buwei: "前浪",
 				list: {
@@ -969,11 +977,11 @@ angular
 			$rootScope.lastData.fepo = null;
 			$rootScope.lastData.banzu = '';
 			$rootScope.lastData.po = '';
-			$rootScope.lastData.output=null;
+			$rootScope.lastData.output = null;
 			$rootScope.lastData.poQty = null;
 			$rootScope.lastData.submitTime = '';
 			$rootScope.lastData.submitDates = {};
-			$rootScope.lastData.pos ={};
+			$rootScope.lastData.pos = {};
 			$rootScope.lastData.style = '';
 			$rootScope.lastData.packageNo = '';
 			$rootScope.lastData.tiezhi = 'FAIL';
@@ -985,11 +993,11 @@ angular
 			$rootScope.lastData.result = 'FAIL';
 			$rootScope.lastData.auditType = '1st';
 			$rootScope.lastData.defectDetail = {
-				dataGUID:'',
-				date:'',
-				userID:'',
-				groupID:'',
-				GUID:$rootScope.NewGuid(),
+				dataGUID: '',
+				date: '',
+				userID: '',
+				groupID: '',
+				GUID: $rootScope.NewGuid(),
 				defectType: '',
 				typeGUID: '',
 				codeGUID: '',
@@ -1003,7 +1011,6 @@ angular
 			$rootScope.lastData.vasImg = [];
 			window.localStorage.removeItem('packageNo')
 		}
-
 
 		$rootScope.clearData = function() {
 			$rootScope.data.flawTable = {
@@ -1019,11 +1026,12 @@ angular
 				CustomerStyleCode: "", //CustomerStyleCode
 				size: "", //size
 				category: "", //款式
-				barCode: '',
 				counts: 0, //总瑕疵数
 				output: "", //
 				heke: null, //
 				unit: "CM",
+				isSys:'Y',
+				barcode:'',
 				gmt: {}
 			};
 
@@ -1039,7 +1047,6 @@ angular
 			$rootScope.data.flawTable.date = $rootScope.getDate();
 			$rootScope.data.flawTable.specificTime = All_Time[$rootScope.getHours()];
 			$rootScope.data.flawTable.orderForm = '';
-			$rootScope.data.flawTable.barCode = '';
 			$rootScope.data.flawTable.comb = '';
 			$rootScope.data.flawTable.CustomerStyleCode = '';
 			$rootScope.data.flawTable.size = '';
@@ -1047,6 +1054,8 @@ angular
 			$rootScope.data.flawTable.counts = 0;
 			$rootScope.data.flawTable.output = "";
 			$rootScope.data.flawTable.unit = "CM";
+			$rootScope.data.flawTable.isSys = 'Y';
+			$rootScope.data.flawTable.barcode='';
 			$rootScope.data.flawTable.gmt = {};
 			$rootScope.data.flawDetails = [];
 			$rootScope.data.add = [];
@@ -1084,22 +1093,24 @@ angular
 		$rootScope.back = function() {
 
 		}
-		
-			document.addEventListener( "plusready", onPlusReady, false );
-	function onPlusReady(){
-		$rootScope.sd=getSDRoot();
-//      alert($rootScope.sd)
-	}
-function getSDRoot(){
-	// 导入android.os.Environment类对象
-	var environment = plus.android.importClass("android.os.Environment");
-	// 判断SD卡是否插入
-	if(environment.getExternalStorageState() !== environment.MEDIA_MOUNTED){
-		plus.nativeUI.toast('没有找到SD卡');
-		return;
-	}
-	return environment.getExternalStorageDirectory();
-}
+
+		document.addEventListener("plusready", onPlusReady, false);
+
+		function onPlusReady() {
+			$rootScope.sd = getSDRoot();
+			//      alert($rootScope.sd)
+		}
+
+		function getSDRoot() {
+			// 导入android.os.Environment类对象
+			var environment = plus.android.importClass("android.os.Environment");
+			// 判断SD卡是否插入
+			if(environment.getExternalStorageState() !== environment.MEDIA_MOUNTED) {
+				plus.nativeUI.toast('没有找到SD卡');
+				return;
+			}
+			return environment.getExternalStorageDirectory();
+		}
 
 		//转码
 		$rootScope.base64EncodeChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/";
@@ -1139,60 +1150,58 @@ function getSDRoot(){
 	.controller('loginCtrl', function($scope, $rootScope, api, $mdToast, localStorage) {
 		$scope.userName = "b52186";
 		$scope.password = "123456789";
-		
+
 		$scope.activated = false;
-		
-// 		$scope.tests = function(){
-// 			console.log('enter tests')
-// 			api.test.get(null, {
-// 				FEPOCode: '6KC34X13X01'
-// 			}, function(data) {
-// 				console.log('enter result')
-// 				console.dir(data);
-// 				var da={};
-// 				for(var i=0;i<data.length;i++){
-// 					da[data[i].CustomerPo] = data[i];
-// 				}
-				
-// 				for (var d in da) {
-// 					if(d){
-// 						console.dir(d)
-// 					}
-// 				}
-// 			}, function(error) {
-// 				console.log(error);
-// 			});
-// 		}
-		
-// 		$scope.tests3 = function(){
-// 			console.log('enter tests3')
-// 			api.test.get(null, {
-// 				FEPOCode: '7KC34O32C03'
-// 			}, function(data) {
-// 				console.log('enter result3')
-// 				console.dir(data);
-// 			}, function(error) {
-// 				console.log(error);
-// 			});
-// 		}
-		
-// 		$scope.te = [0,1,2,1,2,3,4,5]
-// 		$scope.tests2 = function(){
-// 			$scope.dict = {};
-// 			for(var i=0;i<$scope.te.length;i++){
-// 				$scope.dict[$scope.te[i]] = $scope.te[i];
-// 			}
-			
-// 			for (var d in $scope.dict) {
-// 				if(d){
-// 					console.log(d)
-// 				}
-// 			}
-			
-// 		}
-		
-		
-		
+
+//		$scope.tests = function() {
+//			console.log('enter tests')
+//			api.test.get(null, {
+//				FEPOCode: '6KC34X13X01'
+//			}, function(data) {
+//				console.log('enter result')
+//				console.dir(data);
+//				var da = {};
+//				for(var i = 0; i < data.length; i++) {
+//					da[data[i].CustomerPo] = data[i];
+//				}
+//
+//				for(var d in da) {
+//					if(d) {
+//						console.dir(d)
+//					}
+//				}
+//			}, function(error) {
+//				console.log(error);
+//			});
+//		}
+//
+//		$scope.tests3 = function() {
+//			console.log('enter tests3')
+//			api.test.get(null, {
+//				FEPOCode: '7KC34O32C03'
+//			}, function(data) {
+//				console.log('enter result3')
+//				console.dir(data);
+//			}, function(error) {
+//				console.log(error);
+//			});
+//		}
+//
+//		$scope.te = [0, 1, 2, 1, 2, 3, 4, 5]
+//		$scope.tests2 = function() {
+//			$scope.dict = {};
+//			for(var i = 0; i < $scope.te.length; i++) {
+//				$scope.dict[$scope.te[i]] = $scope.te[i];
+//			}
+//
+//			for(var d in $scope.dict) {
+//				if(d) {
+//					console.log(d)
+//				}
+//			}
+//
+//		}
+
 		$scope.login = function() {
 			$scope.activated = true;
 			api.login.post(null, {
@@ -1209,7 +1218,7 @@ function getSDRoot(){
 						var oldWeiyanData = $.parseJSON($.parseJSON(localStorage.getTable("weiyanData")));
 						if(oldData.userName == $scope.userName) {
 							$rootScope.data = oldData;
-								$rootScope.lastData = oldLastData;
+							$rootScope.lastData = oldLastData;
 							$rootScope.weiyanData = oldWeiyanData;
 						} else {
 							localStorage.removeTable("data");
@@ -1223,7 +1232,7 @@ function getSDRoot(){
 						localStorage.saveTable("weiyanData", JSON.stringify($rootScope.weiyanData));
 					}, 1000);
 
-					 $rootScope.lastData.userName = data.userinfo.UserName;
+					$rootScope.lastData.userName = data.userinfo.UserName;
 					$rootScope.weiyanData.UserName = data.userinfo.UserName;
 					$rootScope.data.userName = $scope.userName;
 					$rootScope.weiyanData.userID = $scope.userName;
@@ -1244,7 +1253,7 @@ function getSDRoot(){
 			$rootScope.data.userName = "";
 			$rootScope.data.userKey = 0;
 			$rootScope.clearData();
-				$rootScope.clearWeiyan();
+			$rootScope.clearWeiyan();
 			$rootScope.clearLast();
 		}
 	})
@@ -1421,8 +1430,6 @@ function getSDRoot(){
 		}
 
 		//================================================================
-		
-		
 
 		$scope.hekes = HEKE;
 		$scope.ruid = null;
@@ -1445,9 +1452,10 @@ function getSDRoot(){
 				if($rootScope.data.flawTable.counts != 0) {
 					if($scope.cardid != $scope.ruid) {
 						//				 console.log('jjj' +$rootScope.data.flawTable.GUID)
-
+						
 						api.postFlawTable.post(null, $rootScope.data.flawTable, function(data) {
 							if(data.status == 1) {
+
 								//				     console.dir($rootScope.data.flawDetails);
 								//               console.dir($rootScope.data.flawTable.GUID)
 								api.postFlawDetail.post(null, {
@@ -1456,7 +1464,7 @@ function getSDRoot(){
 									$scope.activated = false;
 									if(data.status == 1) {
 										ttt('提交成功!');
-										//							$mdToast.show($mdToast.simple().content('提交成功!'));
+
 										$scope.styleCode = $rootScope.data.flawTable.CustomerStyleCode;
 										$scope.guid = $rootScope.data.flawTable.GUID;
 										window.localStorage.setItem('guid', $scope.guid);
@@ -1468,7 +1476,7 @@ function getSDRoot(){
 								}, function(error) {
 									$scope.activated = false;
 									ttt('提交失败!')
-										//						$mdToast.show($mdToast.simple().content('提交失败!'));
+
 								});
 							}
 						}, function(error) {
@@ -1515,13 +1523,12 @@ function getSDRoot(){
 			api.getRFIDInfo.get(null, {
 				rfid: $scope.ruid.toString()
 			}, function(data) {
-
+                $rootScope.data.flawTable.barcode=data[0].sBarCode;
 				$rootScope.data.flawTable.orderForm = data[0].sSubFEPOCode;
 				$rootScope.data.flawTable.comb = data[0].sCombName;
 				$rootScope.data.flawTable.CustomerStyleCode = data[0].sCustomerStyleCode;
 				$rootScope.data.flawTable.output = data[0].iPackageQty;
 				$rootScope.data.flawTable.size = data[0].sModifySize;
-				$rootScope.data.flawTable.barCode = data[0].sBarCode;
 				$scope.FLAWDETAIL.orderForm = $rootScope.data.flawTable.orderForm;
 				if($scope.styleCode) {
 					if($scope.styleCode != $rootScope.data.flawTable.CustomerStyleCode) {
@@ -1544,6 +1551,7 @@ function getSDRoot(){
 						//						});
 					}
 				}
+				console.dir($rootScope.data);
 			}, function(error) {
 				console.log(error);
 			});
@@ -1574,7 +1582,7 @@ function getSDRoot(){
 			}
 			//关闭刷卡界面
 		$scope.hideOrder = function() {
-			
+
 				$scope.a1 = true;
 				if((!$rootScope.data.flawTable.groupID || !$rootScope.data.flawTable.categoryCode) && $scope.ruid) {
 					//				$mdToast.show($mdToast.simple().content('请将订单填写完整!'))
@@ -1783,9 +1791,9 @@ function getSDRoot(){
 				tempRect.on('touchmove click', function(evt) {
 					$rootScope.data.flawTable.counts--;
 					$scope.$apply();
-//					console.log("del " + $rootScope.data.flawDetails.length);
+					//					console.log("del " + $rootScope.data.flawDetails.length);
 					for(var i = 0; i < $rootScope.data.flawDetails.length; i++) {
-//						console.log("del  " + $rootScope.data.flawDetails[i].flawID + "|" + evt.target.attrs.id);
+						//						console.log("del  " + $rootScope.data.flawDetails[i].flawID + "|" + evt.target.attrs.id);
 						if($rootScope.data.flawDetails[i].flawID === evt.target.attrs.id) {
 							if($rootScope.data.edit) {
 								$rootScope.data.del.push($rootScope.data.flawDetails[i]);
@@ -1927,15 +1935,30 @@ function getSDRoot(){
 
 		$rootScope.intpoint = setInterval(function() {
 			var Time = new Date();
+			var h=Time.getHours();
 			var m = Time.getMinutes();
 			var s = Time.getSeconds();
 			// add a zero in front of numbers<10
+			if(h<10){
+				h='0'+h;
+				}
+			if(h<11){
+				var eh='0'+(h-1);
+			}
+			else{
+				eh=h-1;
+			}
 			m = checkTime(m);
 			s = checkTime(s);
 			if(m == "00" && s == "00") {
 				if($rootScope.data.edit == false) {
 					if($rootScope.data.flawTable.comb && $rootScope.data.flawTable.groupID && $rootScope.data.flawTable.category) {
-						console.log('success');
+						//console.log('success');
+						var StartDate=$rootScope.data.flawTable.date+" "+eh+":00:00";
+						var EndDate=$rootScope.data.flawTable.date+" "+h+":00:00";
+//						console.log(StartDate)
+//						console.log(EndDate)
+                          console.log($rootScope.data.flawTable.groupGUID)
 						//				console.log($rootScope.data.flawTable.GUID);
 						api.postFlawTable.post(null, $rootScope.data.flawTable, function(data) {
 							if(data.status == 1) {
@@ -1947,8 +1970,25 @@ function getSDRoot(){
 									if(data.status == 1) {
 										$rootScope.goto('submit.html');
 										$rootScope.data.isSubmit = 1;
-										//							console.log($rootScope.data.isSubmit);
-										//							$mdToast.show($mdToast.simple().content('提交成功!'));
+										api.getOutput.get(null, {
+											Style: '',
+											PostID: '1AF95A6F-BD21-468D-AECA-6A234E7A225A',//$rootScope.data.flawTable.groupGUID
+											DateType: 'END',
+											StartDate: '2017-01-20 09:00:00',//StartDate
+											EndDate: '2017-01-20 10:00:00',//EndDate
+											ProcedureNo: '999'
+										}, function(data) {
+											console.dir(data)
+											$rootScope.data.flawTable.output = data[0].output;
+											
+										}, function(error) {
+											console.log('test output error')
+											console.log(error);
+										});
+
+										$rootScope.data.flawTable.size = '';
+										$rootScope.data.flawTable.counts = null;
+										$rootScope.data.flawTable.GUID = $rootScope.NewGuid();
 										ttt('提交成功');
 
 									}
@@ -2114,12 +2154,12 @@ function getSDRoot(){
 		}
 
 		$scope.save = function(g, index, code) {
-//			var id = 'numkeyboard'+code+x;
-//			
-//			if(document.getElementById(id).value){
-//				console.log(document.getElementById(id).value);
-//				$scope.stylePartList[x-1][g] = document.getElementById(id).value;
-//			}
+			//			var id = 'numkeyboard'+code+x;
+			//			
+			//			if(document.getElementById(id).value){
+			//				console.log(document.getElementById(id).value);
+			//				$scope.stylePartList[x-1][g] = document.getElementById(id).value;
+			//			}
 			var gmt = {};
 			for(var n in $scope.chicun) {
 				if($scope.chicun[n]) {
@@ -2133,7 +2173,7 @@ function getSDRoot(){
 							PartName: $scope.stylePartList[i].PartName,
 							size: $scope.stylePartList[i][n]
 						});
-						
+
 					}
 				} else {
 					if(n == g) {
@@ -2197,38 +2237,62 @@ function getSDRoot(){
 
 		$scope.submit = function() {
 			$scope.activated = true;
-			
-			api.changeFlawTable.post(null, $rootScope.data.flawTable, function(data) {
-				if(data.status == 1) {
-					for(var i = 0; i < $rootScope.data.flawDetails.length; i++) {
-						$rootScope.data.flawDetails[i].GUID = $rootScope.data.flawTable.GUID;
-					}
-					api.changeFlawDetail.post(null, {
-						add: $rootScope.data.add,
-						del: $rootScope.data.del
-					}, function(data) {
-						$scope.activated = false;
-						if(data.status == 1) {
-							$mdToast.show($mdToast.simple().content('提交成功!'));
-							//								$rootScope.data.isSubmit=0;
-							$rootScope.clearData();
-							window.localStorage.removeItem('ruid');
-							window.localStorage.removeItem('guid');
-							if($rootScope.data.userKey == 1 || $rootScope.data.userKey == 8 || $rootScope.data.userKey == 9) {
-								$rootScope.goto('defective.html');
-							} else {
-								$rootScope.goto('query2.html');
-							}
+             $rootScope.data.flawTable.isSys = 'N';
+			if($rootScope.data.edit == false) {
+				api.postFlawTable.post(null, $rootScope.data.flawTable, function(data) {
+					if(data.status == 1) {
+
+						$mdToast.show($mdToast.simple().content('提交成功!'));
+						//								$rootScope.data.isSubmit=0;
+						$rootScope.clearData();
+						window.localStorage.removeItem('ruid');
+						window.localStorage.removeItem('guid');
+						if($rootScope.data.userKey == 1 || $rootScope.data.userKey == 8 || $rootScope.data.userKey == 9) {
+							$rootScope.goto('defective.html');
+						} else {
+							$rootScope.goto('query2.html');
 						}
-					}, function(error) {
-						$scope.activated = false;
-						$mdToast.show($mdToast.simple().content('提交失败!'));
-					});
-				}
-			}, function(error) {
-				$scope.activated = false;
-				$mdToast.show($mdToast.simple().content('提交失败!'));
-			});
+
+					}
+				}, function(error) {
+					$scope.activated = false;
+					$mdToast.show($mdToast.simple().content('提交失败!'));
+				});
+			} else {
+
+				api.changeFlawTable.post(null, $rootScope.data.flawTable, function(data) {
+					if(data.status == 1) {
+						for(var i = 0; i < $rootScope.data.flawDetails.length; i++) {
+							$rootScope.data.flawDetails[i].GUID = $rootScope.data.flawTable.GUID;
+						}
+						api.changeFlawDetail.post(null, {
+							add: $rootScope.data.add,
+							del: $rootScope.data.del
+						}, function(data) {
+							$scope.activated = false;
+							if(data.status == 1) {
+								$mdToast.show($mdToast.simple().content('提交成功!'));
+								//								$rootScope.data.isSubmit=0;
+								$rootScope.clearData();
+								window.localStorage.removeItem('ruid');
+								window.localStorage.removeItem('guid');
+								if($rootScope.data.userKey == 1 || $rootScope.data.userKey == 8 || $rootScope.data.userKey == 9) {
+									$rootScope.goto('defective.html');
+								} else {
+									$rootScope.goto('query2.html');
+								}
+							}
+						}, function(error) {
+							$scope.activated = false;
+							$mdToast.show($mdToast.simple().content('提交失败!'));
+						});
+					}
+				}, function(error) {
+					$scope.activated = false;
+					$mdToast.show($mdToast.simple().content('提交失败!'));
+				});
+
+			}
 
 		}
 
@@ -2309,14 +2373,8 @@ function getSDRoot(){
 		////			$scope.$apply();
 		//			$rootScope.goto('defective.html')
 		//		}
-		
-		$scope.outputSum = 0;//总产能
-		$scope.countsSum = 0;//总瑕疵数
-		$scope.perSum = 0;//总不良率
-		
+
 		$scope.query = function() {
-			var outputTem = 0;//总产能暂存量
-			var countsTem = 0; //总瑕疵暂存量
 			$scope.activated = true;
 			api.query1.get(null, {
 				date: $scope.date,
@@ -2327,13 +2385,6 @@ function getSDRoot(){
 				$scope.list = data;
 				for(var i = 0; i < $scope.list.length; i++) {
 					$scope.list[i].bu = ($scope.list[i].counts / $scope.list[i].output * 100).toFixed(1);
-					outputTem = outputTem + $scope.list[i].output;
-					countsTem = countsTem + $scope.list[i].counts;
-					if(i == $scope.list.length-1){
-						$scope.outputSum = outputTem;
-						$scope.countsSum = countsTem;
-						$scope.perSum = (countsTem / outputTem * 100).toFixed(1);
-					}
 				}
 			}, function(error) {
 				$scope.activated = false;
@@ -2484,9 +2535,9 @@ function getSDRoot(){
 		console.log('aa')
 		$scope.defect = '';
 		$scope.defectCode = ''
-		
-		$rootScope.weiyanData.CODETAIL.dataGUID=$rootScope.weiyanData.GUID
-        $rootScope.weiyanData.CODETAIL.date=$rootScope.weiyanData.date;
+
+		$rootScope.weiyanData.CODETAIL.dataGUID = $rootScope.weiyanData.GUID
+		$rootScope.weiyanData.CODETAIL.date = $rootScope.weiyanData.date;
 		if($rootScope.weiyanData.auditType == '2nd') {
 			$scope.auditType = false;
 		} else {
@@ -2502,11 +2553,11 @@ function getSDRoot(){
 		}
 		$scope.clear = function() {
 			$rootScope.weiyanData.CODETAIL = {
-				dataGUID:$rootScope.weiyanData.GUID,
-				userID:$rootScope.weiyanData.userID,
-				date:$rootScope.weiyanData.date,
-				groupID:$rootScope.weiyanData.banzu,
-				GUID:$rootScope.NewGuid(),
+				dataGUID: $rootScope.weiyanData.GUID,
+				userID: $rootScope.weiyanData.userID,
+				date: $rootScope.weiyanData.date,
+				groupID: $rootScope.weiyanData.banzu,
+				GUID: $rootScope.NewGuid(),
 				defectType: '',
 				typeGUID: '',
 				codeGUID: '',
@@ -2518,11 +2569,11 @@ function getSDRoot(){
 
 			}
 			console.dir($rootScope.weiyanData.codeDtail)
-			
+
 		}
-		
-		$scope.changeProductLine=function(){
-			$rootScope.weiyanData.CODETAIL.groupID=$rootScope.weiyanData.banzu;
+
+		$scope.changeProductLine = function() {
+			$rootScope.weiyanData.CODETAIL.groupID = $rootScope.weiyanData.banzu;
 			console.dir($rootScope.lastData)
 		}
 
@@ -2612,10 +2663,10 @@ function getSDRoot(){
 				$rootScope.weiyanData.CODETAIL.QTY = 0;
 				$mdToast.show($mdToast.simple().content('瑕疵不可为空白！'));
 			} else {
-				if($rootScope.weiyanData.CODETAIL.QTY>0){
+				if($rootScope.weiyanData.CODETAIL.QTY > 0) {
 					$rootScope.weiyanData.CODETAIL.QTY--;
 				}
-				
+
 			}
 
 		}
@@ -2659,7 +2710,7 @@ function getSDRoot(){
 				}
 			}
 			//$rootScope.weiyanData.CODETAIL.defectCode = $scope.defectCode.DefectName;
-//			console.log($rootScope.weiyanData.CODETAIL)
+			//			console.log($rootScope.weiyanData.CODETAIL)
 		}
 
 		$scope.focus = function() {
@@ -2667,7 +2718,7 @@ function getSDRoot(){
 				FEPOCode: $rootScope.weiyanData.fepo //'6KC34X13X01'
 			}, function(data) {
 				//				console.log('enter result')
-//				console.dir(data);
+				//				console.dir(data);
 				$scope.dt = data;
 				$rootScope.weiyanData.pos = {};
 				$rootScope.weiyanData.submitDates = {
@@ -2681,7 +2732,7 @@ function getSDRoot(){
 					ms[$scope.dt[i].CustomerPo] = $scope.dt[i].CustomerPo;
 				}
 				for(var j in ms) {
-//					console.log(j)
+					//					console.log(j)
 					$rootScope.weiyanData.pos[j] = j;
 					$rootScope.weiyanData.submitDates.po.push(j);
 
@@ -2702,7 +2753,7 @@ function getSDRoot(){
 					}
 				}
 
-//				console.log($rootScope.weiyanData.submitDates)
+				//				console.log($rootScope.weiyanData.submitDates)
 			}, function(error) {
 				console.log(error);
 			});;
@@ -2736,14 +2787,13 @@ function getSDRoot(){
 		}
 
 		$scope.upLoad = function() {
-			
+
 			console.dir($rootScope.weiyanData.CODETAIL)
-            if($rootScope.weiyanData.output){
-			$rootScope.weiyanData.output=$rootScope.weiyanData.output+$rootScope.weiyanData.CODETAIL.QTY;
-		}
-		else{
-			$rootScope.weiyanData.output=$rootScope.weiyanData.CODETAIL.QTY;
-		}
+			if($rootScope.weiyanData.output) {
+				$rootScope.weiyanData.output = $rootScope.weiyanData.output + $rootScope.weiyanData.CODETAIL.QTY;
+			} else {
+				$rootScope.weiyanData.output = $rootScope.weiyanData.CODETAIL.QTY;
+			}
 			$rootScope.weiyanData.codeDtail.push($rootScope.weiyanData.CODETAIL);
 			$scope.clear();
 			//console.log($rootScope.weiyanData.CODETAIL)
@@ -2756,7 +2806,7 @@ function getSDRoot(){
 				var a = [];
 				a = path.split('/');
 				plus.gallery.save(path);
-				$scope.url = 'file://'+$rootScope.sd+'/DCIM/Camera/' + a[1];
+				$scope.url = 'file://' + $rootScope.sd + '/DCIM/Camera/' + a[1];
 			}, function(e) {
 				outSet("取消拍照");
 			});
@@ -2780,7 +2830,7 @@ function getSDRoot(){
 			if($rootScope.weiyanData.Style && $rootScope.weiyanData.banzu && $rootScope.weiyanData.yanshouNo) {
 				if(t == 1) {
 					$rootScope.sizeName = '上衣尺寸表'
-					$rootScope.dd='上衣';
+					$rootScope.dd = '上衣';
 					$rootScope.categorySize = [{
 						buwei: "胸围",
 						list: {
@@ -2855,7 +2905,7 @@ function getSDRoot(){
 
 				} else {
 					$rootScope.sizeName = '裤子尺寸表'
-					$rootScope.dd='裤子';
+					$rootScope.dd = '裤子';
 					$rootScope.categorySize = [{
 						buwei: "前浪",
 						list: {
@@ -2995,7 +3045,7 @@ function getSDRoot(){
 		init();
 
 	})
-.controller('yanhuo2Ctrl', function($scope, api, $rootScope, All_Time, $mdToast) {
+	.controller('yanhuo2Ctrl', function($scope, api, $rootScope, All_Time, $mdToast) {
 		$scope.buSize = -1;
 
 		$scope.combs = [];
@@ -3137,28 +3187,30 @@ function getSDRoot(){
 		}
 
 		$scope.refer = function() {
-			
-				api.finalTable.post(null, $rootScope.weiyanData, function(data) {
+
+			api.finalTable.post(null, $rootScope.weiyanData, function(data) {
 				if(data.status == 1) {
-					
-					api.finalDetail.post(null,
-						{details:$rootScope.weiyanData.codeDtail},
+
+					api.finalDetail.post(null, {
+							details: $rootScope.weiyanData.codeDtail
+						},
 						function(data) {
-						if(data.status == 1) {
-							$mdToast.show($mdToast.simple().content('提交成功!'));
-							$rootScope.clearWeiyan();
-			                 $rootScope.goto('yanhuo1.html');
-							
-						}
-					}, function(error) {
-						$mdToast.show($mdToast.simple().content('提交失败!'));
-					});
+							if(data.status == 1) {
+								$mdToast.show($mdToast.simple().content('提交成功!'));
+								$rootScope.clearWeiyan();
+								$rootScope.goto('yanhuo1.html');
+
+							}
+						},
+						function(error) {
+							$mdToast.show($mdToast.simple().content('提交失败!'));
+						});
 				}
 			}, function(error) {
 				$scope.activated = false;
 				$mdToast.show($mdToast.simple().content('提交失败!'));
 			});
-			
+
 		}
 
 		$scope.camera = function() {
@@ -3167,7 +3219,7 @@ function getSDRoot(){
 				var a = [];
 				a = path.split('/');
 				plus.gallery.save(path);
-				$scope.url = 'file://'+$rootScope.sd+'/DCIM/Camera/' + a[1];
+				$scope.url = 'file://' + $rootScope.sd + '/DCIM/Camera/' + a[1];
 			}, function(e) {
 				outSet("取消拍照");
 			});
@@ -3191,49 +3243,47 @@ function getSDRoot(){
 		}
 
 		function init() {
-			if($rootScope.weiyanData.category == $rootScope.dd){
+			if($rootScope.weiyanData.category == $rootScope.dd) {
 				if($rootScope.weiyanData.gmt) {
-				for(var i in $rootScope.weiyanData.gmt) {
-					$scope.catecotryComb[i] = $rootScope.weiyanData.gmt[i].comb;
-					$scope.catecotrySize[i] = $rootScope.weiyanData.gmt[i].size;
-					for(var n = 0; n < $rootScope.categorySize.length; n++) {
-						if($rootScope.weiyanData.gmt[i].list[n].size) {
-							$rootScope.categorySize[n].list[i] = $rootScope.weiyanData.gmt[i].list[n].size;
+					for(var i in $rootScope.weiyanData.gmt) {
+						$scope.catecotryComb[i] = $rootScope.weiyanData.gmt[i].comb;
+						$scope.catecotrySize[i] = $rootScope.weiyanData.gmt[i].size;
+						for(var n = 0; n < $rootScope.categorySize.length; n++) {
+							if($rootScope.weiyanData.gmt[i].list[n].size) {
+								$rootScope.categorySize[n].list[i] = $rootScope.weiyanData.gmt[i].list[n].size;
+							}
+							//$rootScope.categorySize[n].list[i]= $rootScope.weiyanData.gmt[n].list[i].size;
 						}
-						//$rootScope.categorySize[n].list[i]= $rootScope.weiyanData.gmt[n].list[i].size;
+
+						switch(i) {
+							case 'GMT1':
+								$scope.sizes1 = $rootScope.weiyanData.sizes.size[$scope.catecotryComb[i]].aa;
+								break;
+							case 'GMT2':
+								$scope.sizes2 = $rootScope.weiyanData.sizes.size[$scope.catecotryComb[i]].aa;
+								break;
+							case 'GMT3':
+								$scope.sizes3 = $rootScope.weiyanData.sizes.size[$scope.catecotryComb[i]].aa;
+								break;
+							case 'GMT4':
+								$scope.sizes4 = $rootScope.weiyanData.sizes.size[$scope.catecotryComb[i]].aa;
+								break;
+							case 'GMT5':
+								$scope.sizes5 = $rootScope.weiyanData.sizes.size[$scope.catecotryComb[i]].aa;
+								break;
+							case 'GMT6':
+								$scope.sizes6 = $rootScope.weiyanData.sizes.size[$scope.catecotryComb[i]].aa;
+								break;
+							default:
+								break;
+						}
 					}
 
-					switch(i) {
-						case 'GMT1':
-							$scope.sizes1 = $rootScope.weiyanData.sizes.size[$scope.catecotryComb[i]].aa;
-							break;
-						case 'GMT2':
-							$scope.sizes2 = $rootScope.weiyanData.sizes.size[$scope.catecotryComb[i]].aa;
-							break;
-						case 'GMT3':
-							$scope.sizes3 = $rootScope.weiyanData.sizes.size[$scope.catecotryComb[i]].aa;
-							break;
-						case 'GMT4':
-							$scope.sizes4 = $rootScope.weiyanData.sizes.size[$scope.catecotryComb[i]].aa;
-							break;
-						case 'GMT5':
-							$scope.sizes5 = $rootScope.weiyanData.sizes.size[$scope.catecotryComb[i]].aa;
-							break;
-						case 'GMT6':
-							$scope.sizes6 = $rootScope.weiyanData.sizes.size[$scope.catecotryComb[i]].aa;
-							break;
-						default:
-							break;
-					}
 				}
-
-			}
-			}
-			else{
+			} else {
 				$rootScope.weiyanData.category = $rootScope.dd;
-				$rootScope.weiyanData.gmt={};
+				$rootScope.weiyanData.gmt = {};
 			}
-			
 
 			//			console.dir($scope.catecotryComb);
 			//			console.dir($scope.catecotrySize)
@@ -3293,13 +3343,12 @@ function getSDRoot(){
 		$scope.dateTime = $rootScope.getDate();
 		$scope.defect = '';
 		$scope.defectCode = '';
-		
-		
-		$rootScope.lastData.defectDetail.dataGUID=$rootScope.lastData.GUID;	
-		$rootScope.lastData.defectDetail.date=$rootScope.lastData.date;
+
+		$rootScope.lastData.defectDetail.dataGUID = $rootScope.lastData.GUID;
+		$rootScope.lastData.defectDetail.date = $rootScope.lastData.date;
 		console.log($rootScope.lastData)
-					
-			//贴纸
+
+		//贴纸
 		if($rootScope.lastData.tiezhi == 'PASS') {
 			$scope.tiezhi = true;
 		} else {
@@ -3351,8 +3400,8 @@ function getSDRoot(){
 			$rootScope.lastData.packageNo = window.localStorage.getItem('packageNo');
 		}
 
-		$scope.changeProductLine=function(){
-			$rootScope.lastData.defectDetail.groupID=$rootScope.lastData.banzu;
+		$scope.changeProductLine = function() {
+			$rootScope.lastData.defectDetail.groupID = $rootScope.lastData.banzu;
 			console.dir($rootScope.lastData)
 		}
 
@@ -3364,7 +3413,7 @@ function getSDRoot(){
 				if(window.localStorage.getItem('packageNo') && $rootScope.lastData.packageNo != window.localStorage.getItem('packageNo')) {
 					console.log('aa');
 					$rootScope.lastData.packageNo = window.localStorage.getItem('packageNo');
-                    $scope.$apply();
+					$scope.$apply();
 				}
 			}, 2000);
 
@@ -3381,10 +3430,10 @@ function getSDRoot(){
 				$rootScope.lastData.defectDetail.QTY = 0;
 				$mdToast.show($mdToast.simple().content('瑕疵不可为空白！'));
 			} else {
-				if($rootScope.lastData.defectDetail.QTY>0){
+				if($rootScope.lastData.defectDetail.QTY > 0) {
 					$rootScope.lastData.defectDetail.QTY--;
 				}
-				
+
 			}
 
 		}
@@ -3407,15 +3456,13 @@ function getSDRoot(){
 			document.getElementById('cen').style.display = "block";
 		}
 
-	
-
 		$scope.camera = function() {
 			var cmr = plus.camera.getCamera();
 			cmr.captureImage(function(path) {
 				var a = [];
 				a = path.split('/');
 				plus.gallery.save(path);
-				$scope.url = 'file://'+$rootScope.sd+'/DCIM/Camera/' + a[1];
+				$scope.url = 'file://' + $rootScope.sd + '/DCIM/Camera/' + a[1];
 			}, function(e) {
 				outSet("取消拍照");
 			});
@@ -3438,11 +3485,11 @@ function getSDRoot(){
 
 		$scope.clear = function() {
 			$rootScope.lastData.defectDetail = {
-				dataGUID:$rootScope.lastData.GUID,
-				userID:$rootScope.lastData.userID,
-				date:$rootScope.lastData.date,
-				groupID:$rootScope.lastData.banzu,
-				GUID:$rootScope.NewGuid(),
+				dataGUID: $rootScope.lastData.GUID,
+				userID: $rootScope.lastData.userID,
+				date: $rootScope.lastData.date,
+				groupID: $rootScope.lastData.banzu,
+				GUID: $rootScope.NewGuid(),
 				defectType: '',
 				typeGUID: '',
 				codeGUID: '',
@@ -3453,7 +3500,6 @@ function getSDRoot(){
 				imgSrc: 'img/white.jpg'
 
 			}
-			
 
 		}
 
@@ -3525,91 +3571,90 @@ function getSDRoot(){
 			api.packageTable.post(null, $rootScope.lastData, function(data) {
 				if(data.status == 1) {
 					console.log($rootScope.lastData.DefectDetails)
-					api.packageDetail.post(null,
-						{details:$rootScope.lastData.DefectDetails},
+					api.packageDetail.post(null, {
+							details: $rootScope.lastData.DefectDetails
+						},
 						function(data) {
-						if(data.status == 1) {
-							$mdToast.show($mdToast.simple().content('提交成功!'));
-							$rootScope.clearLast();						
-							$scope.auditType == true;
-			                $scope.result = false;
-			                $scope.COC = false;
-			                $scope.inerNumber = false;
-			                $scope.MD = false;
-			                $scope.daima = false;
-			                $scope.fuliao = false;
-		                 	$scope.tiezhi = false;
-			                $scope.auditType = true;
-			window.clearInterval($scope.int1)
-//			console.dir($rootScope.lastData)
-							
-						}
-					}, function(error) {
-						$mdToast.show($mdToast.simple().content('提交失败!'));
-					});
+							if(data.status == 1) {
+								$mdToast.show($mdToast.simple().content('提交成功!'));
+								$rootScope.clearLast();
+								$scope.auditType == true;
+								$scope.result = false;
+								$scope.COC = false;
+								$scope.inerNumber = false;
+								$scope.MD = false;
+								$scope.daima = false;
+								$scope.fuliao = false;
+								$scope.tiezhi = false;
+								$scope.auditType = true;
+								window.clearInterval($scope.int1)
+									//			console.dir($rootScope.lastData)
+
+							}
+						},
+						function(error) {
+							$mdToast.show($mdToast.simple().content('提交失败!'));
+						});
 				}
 			}, function(error) {
 				$scope.activated = false;
 				$mdToast.show($mdToast.simple().content('提交失败!'));
 			});
-			
-			
+
 		}
 
 		$scope.focus = function() {
 
-			
-				api.getPo.get(null, {
-					FEPOCode: $rootScope.lastData.fepo //'6KC34X13X01'
-				}, function(data) {
-					//				console.log('enter result')
-					console.dir(data);
-					$scope.dt = data;
-					$rootScope.lastData.pos = {};
-					$rootScope.lastData.submitDates = {
-						po: [],
-						list: {}
-					};
-					var ms = {};
+			api.getPo.get(null, {
+				FEPOCode: $rootScope.lastData.fepo //'6KC34X13X01'
+			}, function(data) {
+				//				console.log('enter result')
+				console.dir(data);
+				$scope.dt = data;
+				$rootScope.lastData.pos = {};
+				$rootScope.lastData.submitDates = {
+					po: [],
+					list: {}
+				};
+				var ms = {};
 
-					//$rootScope.weiyanData.submitDates=[data[0].DeliveryDate];
-					for(var i = 1; i < data.length; i++) {
-						ms[$scope.dt[i].CustomerPo] = $scope.dt[i].CustomerPo;
+				//$rootScope.weiyanData.submitDates=[data[0].DeliveryDate];
+				for(var i = 1; i < data.length; i++) {
+					ms[$scope.dt[i].CustomerPo] = $scope.dt[i].CustomerPo;
+				}
+				for(var j in ms) {
+					console.log(j)
+					$rootScope.lastData.pos[j] = j;
+					$rootScope.lastData.submitDates.po.push(j);
+
+				}
+				for(var n in $rootScope.lastData.pos) {
+
+					$rootScope.lastData.submitDates.list[n] = {
+						mm: []
 					}
-					for(var j in ms) {
-						console.log(j)
-						$rootScope.lastData.pos[j] = j;
-						$rootScope.lastData.submitDates.po.push(j);
-
-					}
-					for(var n in $rootScope.lastData.pos) {
-
-						$rootScope.lastData.submitDates.list[n] = {
-							mm: []
-						}
-						for(var j = 0; j < $scope.dt.length; j++) {
-							if($rootScope.lastData.pos[n] == $scope.dt[j].CustomerPo) {
-								$rootScope.lastData.submitDates.list[n].mm.push({
-									date: data[j].DeliveryDate,
-									qty: data[j].POQty,
-									style: data[j].CompanyStyleCode
-								});
-							}
+					for(var j = 0; j < $scope.dt.length; j++) {
+						if($rootScope.lastData.pos[n] == $scope.dt[j].CustomerPo) {
+							$rootScope.lastData.submitDates.list[n].mm.push({
+								date: data[j].DeliveryDate,
+								qty: data[j].POQty,
+								style: data[j].CompanyStyleCode
+							});
 						}
 					}
+				}
 
-					console.log($rootScope.lastData.submitDates)
-				}, function(error) {
-					console.log(error);
-				});;
+				console.log($rootScope.lastData.submitDates)
+			}, function(error) {
+				console.log(error);
+			});;
 
-			
 		}
-			$scope.choose = function() {
-			
+		$scope.choose = function() {
+
 			$scope.dates = $rootScope.lastData.submitDates.list[$rootScope.lastData.po].mm;
 		}
-		
+
 		$scope.aa = function() {
 			if(!$rootScope.lastData.po) {
 				$mdToast.show($mdToast.somple().content('请先选择交期'))
@@ -3633,12 +3678,11 @@ function getSDRoot(){
 		}
 
 		$scope.upLoad = function() {
-		if($rootScope.lastData.output){
-			$rootScope.lastData.output=$rootScope.lastData.output+$rootScope.lastData.defectDetail.QTY;
-		}
-		else{
-			$rootScope.lastData.output=$rootScope.lastData.defectDetail.QTY;
-		}
+			if($rootScope.lastData.output) {
+				$rootScope.lastData.output = $rootScope.lastData.output + $rootScope.lastData.defectDetail.QTY;
+			} else {
+				$rootScope.lastData.output = $rootScope.lastData.defectDetail.QTY;
+			}
 			$rootScope.lastData.DefectDetails.push($rootScope.lastData.defectDetail);
 			$scope.clear();
 
@@ -3652,7 +3696,7 @@ function getSDRoot(){
 		}
 
 		$scope.changeDefectType1 = function() {
-			
+
 			for(i = 0; i < $scope.defectTypeList1.length; i++) {
 				if($rootScope.lastData.defectDetail.typeGUID == $scope.defectTypeList1[i].GUID) {
 					$rootScope.lastData.defectDetail.defectType = $scope.defectTypeList1[i].DefectTypeName;
@@ -3668,8 +3712,7 @@ function getSDRoot(){
 			}, function(error) {
 				console.log(error);
 			});
-		
-			
+
 		}
 
 		$scope.changeDefectCode = function() {
@@ -3683,7 +3726,7 @@ function getSDRoot(){
 		}
 
 		function init() {
-			
+
 			if($rootScope.lastData.submitDates.list && $rootScope.lastData.po) {
 
 				$scope.dates = $rootScope.lastData.submitDates.list[$rootScope.lastData.po].mm;
@@ -3701,7 +3744,6 @@ function getSDRoot(){
 					console.log(error);
 				});
 			}
-	
 
 			//瑕疵类别
 			api.defectType.get(null, {},
@@ -3725,7 +3767,7 @@ function getSDRoot(){
 				var a = [];
 				a = path.split('/');
 				plus.gallery.save(path);
-				$scope.url = 'file://'+$rootScope.sd+'/DCIM/Camera/' + a[1];
+				$scope.url = 'file://' + $rootScope.sd + '/DCIM/Camera/' + a[1];
 			}, function(e) {
 				outSet("取消拍照");
 			});
@@ -3752,4 +3794,3 @@ function getSDRoot(){
 		}
 
 	});
-	

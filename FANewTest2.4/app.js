@@ -1142,54 +1142,54 @@ function getSDRoot(){
 		
 		$scope.activated = false;
 		
-		$scope.tests = function(){
-			console.log('enter tests')
-			api.test.get(null, {
-				FEPOCode: '6KC34X13X01'
-			}, function(data) {
-				console.log('enter result')
-				console.dir(data);
-				var da={};
-				for(var i=0;i<data.length;i++){
-					da[data[i].CustomerPo] = data[i];
-				}
-				
-				for (var d in da) {
-					if(d){
-						console.dir(d)
-					}
-				}
-			}, function(error) {
-				console.log(error);
-			});
-		}
+//		$scope.tests = function(){
+//			console.log('enter tests')
+//			api.test.get(null, {
+//				FEPOCode: '6KC34X13X01'
+//			}, function(data) {
+//				console.log('enter result')
+//				console.dir(data);
+//				var da={};
+//				for(var i=0;i<data.length;i++){
+//					da[data[i].CustomerPo] = data[i];
+//				}
+//				
+//				for (var d in da) {
+//					if(d){
+//						console.dir(d)
+//					}
+//				}
+//			}, function(error) {
+//				console.log(error);
+//			});
+//		}
+//		
+//		$scope.tests3 = function(){
+//			console.log('enter tests3')
+//			api.test.get(null, {
+//				FEPOCode: '7KC34O32C03'
+//			}, function(data) {
+//				console.log('enter result3')
+//				console.dir(data);
+//			}, function(error) {
+//				console.log(error);
+//			});
+//		}
 		
-		$scope.tests3 = function(){
-			console.log('enter tests3')
-			api.test.get(null, {
-				FEPOCode: '7KC34O32C03'
-			}, function(data) {
-				console.log('enter result3')
-				console.dir(data);
-			}, function(error) {
-				console.log(error);
-			});
-		}
-		
-		$scope.te = [0,1,2,1,2,3,4,5]
-		$scope.tests2 = function(){
-			$scope.dict = {};
-			for(var i=0;i<$scope.te.length;i++){
-				$scope.dict[$scope.te[i]] = $scope.te[i];
-			}
-			
-			for (var d in $scope.dict) {
-				if(d){
-					console.log(d)
-				}
-			}
-			
-		}
+//		$scope.te = [0,1,2,1,2,3,4,5]
+//		$scope.tests2 = function(){
+//			$scope.dict = {};
+//			for(var i=0;i<$scope.te.length;i++){
+//				$scope.dict[$scope.te[i]] = $scope.te[i];
+//			}
+//			
+//			for (var d in $scope.dict) {
+//				if(d){
+//					console.log(d)
+//				}
+//			}
+//			
+//		}
 		
 		
 		
@@ -2309,8 +2309,14 @@ function getSDRoot(){
 		////			$scope.$apply();
 		//			$rootScope.goto('defective.html')
 		//		}
-
+		
+		$scope.outputSum = 0;//总产能
+		$scope.countsSum = 0;//总瑕疵数
+		$scope.perSum = 0;//总不良率
+		
 		$scope.query = function() {
+			var outputTem = 0;//总产能暂存量
+			var countsTem = 0; //总瑕疵暂存量
 			$scope.activated = true;
 			api.query1.get(null, {
 				date: $scope.date,
@@ -2321,6 +2327,13 @@ function getSDRoot(){
 				$scope.list = data;
 				for(var i = 0; i < $scope.list.length; i++) {
 					$scope.list[i].bu = ($scope.list[i].counts / $scope.list[i].output * 100).toFixed(1);
+					outputTem = outputTem + $scope.list[i].output;
+					countsTem = countsTem + $scope.list[i].counts;
+					if(i == $scope.list.length-1){
+						$scope.outputSum = outputTem;
+						$scope.countsSum = countsTem;
+						$scope.perSum = (countsTem / outputTem * 100).toFixed(1);
+					}
 				}
 			}, function(error) {
 				$scope.activated = false;

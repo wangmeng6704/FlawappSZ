@@ -1142,54 +1142,54 @@ function getSDRoot(){
 		
 		$scope.activated = false;
 		
-		$scope.tests = function(){
-			console.log('enter tests')
-			api.test.get(null, {
-				FEPOCode: '6KC34X13X01'
-			}, function(data) {
-				console.log('enter result')
-				console.dir(data);
-				var da={};
-				for(var i=0;i<data.length;i++){
-					da[data[i].CustomerPo] = data[i];
-				}
+// 		$scope.tests = function(){
+// 			console.log('enter tests')
+// 			api.test.get(null, {
+// 				FEPOCode: '6KC34X13X01'
+// 			}, function(data) {
+// 				console.log('enter result')
+// 				console.dir(data);
+// 				var da={};
+// 				for(var i=0;i<data.length;i++){
+// 					da[data[i].CustomerPo] = data[i];
+// 				}
 				
-				for (var d in da) {
-					if(d){
-						console.dir(d)
-					}
-				}
-			}, function(error) {
-				console.log(error);
-			});
-		}
+// 				for (var d in da) {
+// 					if(d){
+// 						console.dir(d)
+// 					}
+// 				}
+// 			}, function(error) {
+// 				console.log(error);
+// 			});
+// 		}
 		
-		$scope.tests3 = function(){
-			console.log('enter tests3')
-			api.test.get(null, {
-				FEPOCode: '7KC34O32C03'
-			}, function(data) {
-				console.log('enter result3')
-				console.dir(data);
-			}, function(error) {
-				console.log(error);
-			});
-		}
+// 		$scope.tests3 = function(){
+// 			console.log('enter tests3')
+// 			api.test.get(null, {
+// 				FEPOCode: '7KC34O32C03'
+// 			}, function(data) {
+// 				console.log('enter result3')
+// 				console.dir(data);
+// 			}, function(error) {
+// 				console.log(error);
+// 			});
+// 		}
 		
-		$scope.te = [0,1,2,1,2,3,4,5]
-		$scope.tests2 = function(){
-			$scope.dict = {};
-			for(var i=0;i<$scope.te.length;i++){
-				$scope.dict[$scope.te[i]] = $scope.te[i];
-			}
+// 		$scope.te = [0,1,2,1,2,3,4,5]
+// 		$scope.tests2 = function(){
+// 			$scope.dict = {};
+// 			for(var i=0;i<$scope.te.length;i++){
+// 				$scope.dict[$scope.te[i]] = $scope.te[i];
+// 			}
 			
-			for (var d in $scope.dict) {
-				if(d){
-					console.log(d)
-				}
-			}
+// 			for (var d in $scope.dict) {
+// 				if(d){
+// 					console.log(d)
+// 				}
+// 			}
 			
-		}
+// 		}
 		
 		
 		

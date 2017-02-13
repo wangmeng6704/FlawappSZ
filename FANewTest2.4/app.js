@@ -1148,8 +1148,8 @@ angular
 		$scope.url = "login.html";
 	})
 	.controller('loginCtrl', function($scope, $rootScope, api, $mdToast, localStorage) {
-		$scope.userName = "b52186";
-		$scope.password = "123456789";
+		$scope.userName = "";
+		$scope.password = "";
 
 		$scope.activated = false;
 
@@ -1446,6 +1446,53 @@ angular
 		if($rootScope.data.flawTable.CustomerStyleCode) {
 			$scope.styleCode = $rootScope.data.flawTable.CustomerStyleCode;
 		}
+		
+		//调用数据接口
+		$scope.card = function() {
+			window.localStorage.setItem('ruid', $scope.ruid);
+
+			api.getRFIDInfo.get(null, {
+				rfid: $scope.ruid.toString()
+			}, function(data) {
+                if(data.length != 0){
+                		$rootScope.data.flawTable.orderForm = data[0].sSubFEPOCode;
+					$rootScope.data.flawTable.barcode=data[0].sBarCode;
+					$rootScope.data.flawTable.comb = data[0].sCombName;
+					$rootScope.data.flawTable.CustomerStyleCode = data[0].sCustomerStyleCode;
+					$rootScope.data.flawTable.output = data[0].iPackageQty;
+					$rootScope.data.flawTable.size = data[0].sModifySize;
+                }else{
+                		console.log('getRFIDInfo Fail')
+                }
+                
+				$scope.FLAWDETAIL.orderForm = $rootScope.data.flawTable.orderForm;
+				if($scope.styleCode) {
+					if($scope.styleCode != $rootScope.data.flawTable.CustomerStyleCode) {
+						$rootScope.data.flawTable.groupID = '';
+						$rootScope.data.flawTable.groupGUID = '';
+						$rootScope.data.flawTable.category = '';
+						$rootScope.data.flawTable.categoryCode = '';
+
+					} else {
+						for(var i = 0; i < MODELS.length; i++) {
+							if(MODELS[i].productName == $rootScope.data.flawTable.category) {
+								$scope.model = MODELS[i];
+								break;
+							}
+						}
+						//						angular.element(document).ready(function() {
+						build(0);
+						build(1);
+
+						//						});
+					}
+				}
+			}, function(error) {
+				console.log(error);
+			});
+
+		}
+		
 		//失去焦点
 		$scope.aa = function() {
 				$scope.cardid = window.localStorage.getItem('ruid');
@@ -1456,7 +1503,7 @@ angular
 						api.postFlawTable.post(null, $rootScope.data.flawTable, function(data) {
 							if(data.status == 1) {
 
-								//				     console.dir($rootScope.data.flawDetails);
+								//				console.dir($rootScope.data.flawDetails);
 								//               console.dir($rootScope.data.flawTable.GUID)
 								api.postFlawDetail.post(null, {
 									details: $rootScope.data.flawDetails
@@ -1492,7 +1539,7 @@ angular
 						if($scope.cardid != $scope.ruid) {
 							$scope.card();
 						} else {
-							ttt('CardId相同，请勿重复刷卡！');
+							ttt('CardId相同，请勿重复刷卡!');
 						}
 
 					} else {
@@ -1516,47 +1563,7 @@ angular
 					ttt('请选择产线');
 				}
 			}
-			//调用数据接口
-		$scope.card = function() {
-			window.localStorage.setItem('ruid', $scope.ruid);
-
-			api.getRFIDInfo.get(null, {
-				rfid: $scope.ruid.toString()
-			}, function(data) {
-                $rootScope.data.flawTable.barcode=data[0].sBarCode;
-				$rootScope.data.flawTable.orderForm = data[0].sSubFEPOCode;
-				$rootScope.data.flawTable.comb = data[0].sCombName;
-				$rootScope.data.flawTable.CustomerStyleCode = data[0].sCustomerStyleCode;
-				$rootScope.data.flawTable.output = data[0].iPackageQty;
-				$rootScope.data.flawTable.size = data[0].sModifySize;
-				$scope.FLAWDETAIL.orderForm = $rootScope.data.flawTable.orderForm;
-				if($scope.styleCode) {
-					if($scope.styleCode != $rootScope.data.flawTable.CustomerStyleCode) {
-						$rootScope.data.flawTable.groupID = '';
-						$rootScope.data.flawTable.groupGUID = '';
-						$rootScope.data.flawTable.category = '';
-						$rootScope.data.flawTable.categoryCode = '';
-
-					} else {
-						for(var i = 0; i < MODELS.length; i++) {
-							if(MODELS[i].productName == $rootScope.data.flawTable.category) {
-								$scope.model = MODELS[i];
-								break;
-							}
-						}
-						//						angular.element(document).ready(function() {
-						build(0);
-						build(1);
-
-						//						});
-					}
-				}
-				console.dir($rootScope.data);
-			}, function(error) {
-				console.log(error);
-			});
-
-		}
+			
 
 		$scope.toggle = function(item) {
 			var idx = $scope.selectHeKe.indexOf(item);
@@ -1958,7 +1965,7 @@ angular
 						var EndDate=$rootScope.data.flawTable.date+" "+h+":00:00";
 //						console.log(StartDate)
 //						console.log(EndDate)
-                          console.log($rootScope.data.flawTable.groupGUID)
+//                        console.log($rootScope.data.flawTable.groupGUID)
 						//				console.log($rootScope.data.flawTable.GUID);
 						api.postFlawTable.post(null, $rootScope.data.flawTable, function(data) {
 							if(data.status == 1) {
@@ -1978,11 +1985,11 @@ angular
 											EndDate: '2017-01-20 10:00:00',//EndDate
 											ProcedureNo: '999'
 										}, function(data) {
-											console.dir(data)
+//											console.dir(data)
 											$rootScope.data.flawTable.output = data[0].output;
 											
 										}, function(error) {
-											console.log('test output error')
+//											console.log('test output error')
 											console.log(error);
 										});
 
@@ -2373,7 +2380,11 @@ angular
 		////			$scope.$apply();
 		//			$rootScope.goto('defective.html')
 		//		}
-
+		
+		$scope.countsSum = 0;
+		$scope.outputSum = 0;
+		$scope.perSum = 0;
+		
 		$scope.query = function() {
 			$scope.activated = true;
 			api.query1.get(null, {
@@ -2385,6 +2396,11 @@ angular
 				$scope.list = data;
 				for(var i = 0; i < $scope.list.length; i++) {
 					$scope.list[i].bu = ($scope.list[i].counts / $scope.list[i].output * 100).toFixed(1);
+					$scope.countsSum = $scope.countsSum + $scope.list[i].counts;
+					$scope.outputSum = $scope.outputSum + $scope.list[i].output;
+					if(i == $scope.list.length-1){
+						$scope.perSum = ($scope.countsSum / $scope.outputSum * 100).toFixed(1);
+					}
 				}
 			}, function(error) {
 				$scope.activated = false;

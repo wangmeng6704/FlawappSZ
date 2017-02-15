@@ -843,7 +843,7 @@ angular
 
 			},
 			DefectDetails: [], //瑕疵明细表
-			vasImg: [] //VAS图片路径表 
+			vasImg: {imgsrc:[]} //VAS图片路径表 
 
 		}
 
@@ -1008,7 +1008,7 @@ angular
 
 			};
 			$rootScope.lastData.DefectDetails = [];
-			$rootScope.lastData.vasImg = [];
+			$rootScope.lastData.vasImg.imgsrc = [];
 			window.localStorage.removeItem('packageNo')
 		}
 
@@ -3063,6 +3063,7 @@ angular
 	})
 	.controller('yanhuo2Ctrl', function($scope, api, $rootScope, All_Time, $mdToast) {
 		$scope.buSize = -1;
+		$scope.result='';
 
 		$scope.combs = [];
 		$scope.sizes = [];
@@ -3228,6 +3229,8 @@ angular
 			});
 
 		}
+		
+		
 
 		$scope.camera = function() {
 			var cmr = plus.camera.getCamera();
@@ -3251,6 +3254,7 @@ angular
 
 		}
 		$scope.transform = function() {
+			console.log($scope.result);
 			if($scope.result == true) {
 				$rootScope.weiyanData.result = 'PASS'
 			} else {
@@ -3305,8 +3309,7 @@ angular
 			//			console.dir($scope.catecotrySize)
 			//			console.dir($rootScope.categorySize)
 			api.getSize.get(null, {
-				FEPOCode: '7KC34O32C03'
-
+				FEPOCode: $rootScope.weiyanData.fepo
 			}, function(data) {
 				console.dir(data);
 				//				console.log('enter result')
@@ -3418,7 +3421,7 @@ angular
 
 		$scope.changeProductLine = function() {
 			$rootScope.lastData.defectDetail.groupID = $rootScope.lastData.banzu;
-			console.dir($rootScope.lastData)
+			//console.dir($rootScope.lastData)
 		}
 
 		$scope.barcode = function() {
@@ -3771,6 +3774,16 @@ angular
 				function(error) {
 					console.log(error);
 				});
+				
+				
+				api.productionLine.get(null, {
+				user: $rootScope.data.userName
+			}, function(data) {
+				console.log(data)
+				$scope.productionLineList = data;
+			}, function(error) {
+				console.log(error);
+			});
 
 		}
 		init();
@@ -3790,21 +3803,26 @@ angular
 		}
 
 		$scope.refer = function() {
-			$mdToast.show($mdToast.simple().content('提交成功'));
+			
 			$rootScope.goto('zhuangxiang1.html');
 		}
 
 		$scope.add = function() {
 			$scope.defectImg = $scope.url;
-			$rootScope.lastData.vasImg.push($scope.defectImg);
+//			if($rootScope.lastData.vasImg.imgsrc.length == 0){
+//				$rootScope.lastData.vasImg.imgsrc[0] = $scope.defectImg;
+//			}else{
+				$rootScope.lastData.vasImg.imgsrc.push($scope.defectImg);
+//			}
+
 		}
 
 		$scope.delectDtails = function(i) {
-			$rootScope.lastData.vasImg.splice(i, 1);
+			$rootScope.lastData.vasImg.imgsrc.splice(i, 1);
 		}
 
 		$scope.big = function(t) {
-			$scope.bigImg = $rootScope.lastData.vasImg[t];
+			$scope.bigImg = $rootScope.lastData.vasImg.imgsrc[t];
 			document.getElementById('b').style.display = "block";
 			document.getElementById('cen').style.display = "block";
 		}
